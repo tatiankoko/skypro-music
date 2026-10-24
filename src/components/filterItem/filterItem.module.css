@@ -1,0 +1,96 @@
+.filter__button__wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter__button__wrapper:not(:last-child) {
+    margin-right: 10px;
+}
+
+.filter__button {
+    /*composes: btn-text from '/src/UI/Button/button.module.css';*/
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    border: 1px solid #ffffff;
+    border-radius: 60px;
+    padding: 6px 20px;
+    color: #ffffff;
+    cursor: pointer;
+    background-color: transparent;
+
+}
+
+.filter__button:hover {
+    border-color: #D9B6FF;
+    color: #D9B6FF;
+}
+
+.filter__button_active {
+    border-color: #AD61FF;
+    color: #AD61FF;
+}
+
+.filter__wrapper {
+    position: absolute;
+    left: 0;
+    top: 50px;
+    padding: 34px;
+    border-radius: 12px;
+    background: #313131;
+    /*width: 248px;*/
+    max-height: 305px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.filter__list {
+    color: white;
+    display: flex;
+    gap: 28px;
+    height: max-content;
+    max-height: 237px;
+    overflow-y: auto;
+    flex-direction: column;
+    width: max-content;
+    max-width: 248px;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: rgba(75, 73, 73, 1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: white;
+    }
+}
+
+.filter__item {
+    padding-right: 28px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    color: white;
+    background-color: transparent;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.filter__item:hover {
+    color: #D9B6FF;
+}
+
+.filter__item_selected {
+    color: #B672FF;
+    font-weight: 400;
+    text-decoration-line: underline;
+}
