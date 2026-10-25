@@ -74,7 +74,7 @@ export default function Bar() {
                     <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
                   </svg>
                 </div>
-                <div
+                {/*<div
                   className={classNames(
                     styles.trackPlay__dislike,
                     styles.btnIcon,
@@ -83,7 +83,7 @@ export default function Bar() {
                   <svg className={styles.trackPlay__dislikeSvg}>
                     <use xlinkHref="/img/icon/sprite.svg#icon-dislike"></use>
                   </svg>
-                </div>
+                </div>*/}
               </div>
             </div>
           </div>
