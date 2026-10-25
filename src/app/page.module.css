@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 100%;
   overflow: hidden;
-  background-color: #383838;
+  background-color: #181818;
 }
 
 .container {
@@ -25,4 +25,5 @@
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
+  height: calc(100vh - 78px);
 }

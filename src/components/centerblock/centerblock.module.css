@@ -1,5 +1,10 @@
 .centerblock {
     width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
     -webkit-box-flex: 3;
     -ms-flex-positive: 3;
     flex-grow: 3;
@@ -20,6 +25,8 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
@@ -81,11 +88,26 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
     overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: rgba(75, 73, 73, 1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: white;
+    }
 }
 
 .btn-text {
