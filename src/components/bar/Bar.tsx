@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styles from './bar.module.css';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { setIsPlaying } from '@/store/features/trackSlice';
 
 export default function Bar() {
@@ -12,6 +12,12 @@ export default function Bar() {
   const dispatch = useAppDispatch();
   const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [progress, setProgress] = useState(0);
+
+  if (audioRef && audioRef.current) {
+    if (isPlaying) audioRef.current.play();
+    else audioRef.current.pause();
+  }
 
   const togglePlay = () => {
     if (!audioRef.current) {
@@ -29,17 +35,38 @@ export default function Bar() {
     }
   };
 
+  const onEnded = () => dispatch(setIsPlaying(false));
+
+  const handleTimeUpdate = () => {
+    const audio: HTMLAudioElement | null = audioRef.current;
+
+    if (!audio) return;
+
+    const currentProgress = audio.duration
+      ? (audio.currentTime / audio.duration) * 100
+      : 0;
+
+    setProgress(currentProgress);
+  };
+
   if (!currentTrack) return <></>;
+  /*style={{ display: 'none' }}*/
 
   return (
     <div className={styles.bar}>
       <audio
         ref={audioRef}
         src={currentTrack?.track_file}
+        onTimeUpdate={handleTimeUpdate}
         style={{ display: 'none' }}
+        onEnded={onEnded}
       ></audio>
       <div className={styles.bar__content}>
-        <div className={styles.bar__playerProgress}></div>
+        <progress
+          className={styles.bar__playerProgress}
+          value={progress}
+          max={100}
+        ></progress>
         <div className={styles.bar__playerBlock}>
           <div className={styles.bar__player}>
             <div className={styles.player__controls}>
