@@ -18,8 +18,12 @@ export default function Track({ track }: TrackTypeProp) {
   const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
 
   const onClickTrack = () => {
-    dispatch(setCurrentTrack(track));
-    dispatch(setIsPlaying(true));
+    if (track._id === currentTrack?._id) {
+      dispatch(setIsPlaying(!isPlaying));
+    } else {
+      dispatch(setCurrentTrack(track));
+      dispatch(setIsPlaying(true));
+    }
   };
 
   return (

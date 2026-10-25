@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styles from './bar.module.css';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { setIsPlaying } from '@/store/features/trackSlice';
 
 export default function Bar() {
@@ -13,6 +13,9 @@ export default function Bar() {
   const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [progress, setProgress] = useState(0);
+  const [volume, setVolume] = useState(
+    audioRef?.current ? audioRef.current.volume : 0.5,
+  );
 
   if (audioRef && audioRef.current) {
     if (isPlaying) audioRef.current.play();
@@ -49,8 +52,15 @@ export default function Bar() {
     setProgress(currentProgress);
   };
 
+  const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const v: number = parseFloat(event.target.value);
+
+    setVolume(v);
+
+    if (audioRef.current) audioRef.current.volume = v;
+  };
+
   if (!currentTrack) return <></>;
-  /*style={{ display: 'none' }}*/
 
   return (
     <div className={styles.bar}>
@@ -169,6 +179,11 @@ export default function Bar() {
                   )}
                   type="range"
                   name="range"
+                  min={0.0}
+                  max={1.0}
+                  step={0.1}
+                  value={volume}
+                  onChange={handleVolumeChange}
                 />
               </div>
             </div>
