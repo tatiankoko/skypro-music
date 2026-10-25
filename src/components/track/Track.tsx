@@ -4,8 +4,9 @@ import styles from './track.module.css';
 import Link from 'next/link';
 import { formatTime } from '@/utils/helper';
 import { TrackType } from '@/sharedTypes/sharedTypes';
-import { useAppDispatch } from '@/store/store';
-import { setCurrentTrack } from '@/store/features/trackSlice';
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { setCurrentTrack, setIsPlaying } from '@/store/features/trackSlice';
+import classNames from 'classnames';
 
 type TrackTypeProp = {
   track: TrackType;
@@ -13,9 +14,12 @@ type TrackTypeProp = {
 
 export default function Track({ track }: TrackTypeProp) {
   const dispatch = useAppDispatch();
+  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
+  const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
 
   const onClickTrack = () => {
     dispatch(setCurrentTrack(track));
+    dispatch(setIsPlaying(true));
   };
 
   return (
@@ -23,8 +27,15 @@ export default function Track({ track }: TrackTypeProp) {
       <div className={styles.playlist__track}>
         <div className={styles.track__title}>
           <div className={styles.track__titleImage}>
-            <svg className={styles.track__titleSvg}>
-              <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
+            <svg
+              className={classNames(styles.track__titleSvg, {
+                [styles.active]: track._id === currentTrack?._id,
+                [styles.playing]: isPlaying && track._id === currentTrack?._id,
+              })}
+            >
+              {track._id === currentTrack?._id ? null : (
+                <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
+              )}
             </svg>
           </div>
           <div className="track__title-text">
