@@ -49,7 +49,10 @@ export default function Bar() {
     }
   };
 
-  const onEnded = () => dispatch(setIsPlaying(false));
+  const onEnded = () => {
+    dispatch(setIsPlaying(false));
+    onNextTrack();
+  };
 
   const onTimeUpdate = () => {
     const audio: HTMLAudioElement | null = audioRef?.current;
