@@ -4,6 +4,12 @@
     left: 0;
     width: 100%;
     background: rgba(28, 28, 28, 0.5);
+    box-shadow: 0 -40px 40px #181818;
+}
+
+.bar:hover .bar__info {
+    display: flex;
+    opacity: 1;
 }
 
 .bar__content {
@@ -14,8 +20,34 @@
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+    overflow: visible;
 }
 
+.bar__info {
+    height: 40px;
+    background: #31313118;
+    border: 1px white solid;
+    border-radius: 12px;
+    display: none;
+    align-items: center;
+    justify-content: flex-end;
+    opacity: 0;
+    position: absolute;
+    bottom: 82px;
+    right: 36px;
+    padding: 16px;
+    color: white;
+
+    transition-property: opacity, display;
+    transition-duration: 0.3s;
+    transition-behavior: allow-discrete;
+}
+
+.bar__info .p {
+    color: white;
+}
+
+/*
 .bar__playerProgress {
     width: 100%;
     height: 5px;
@@ -24,9 +56,10 @@
 
 .bar__playerProgress::-webkit-progress-value {
     background-color: white;
-    /*border-radius: 8px;*/
+    !*border-radius: 8px;*!
     transition: width 0.3s ease;
 }
+*/
 
 .bar__playerBlock {
     height: 73px;
@@ -360,14 +393,14 @@
     cursor: pointer;
 }
 
-.btnIcon:active svg {
+.btnIcon_active svg {
     fill: transparent;
     stroke: #ffffff;
     cursor: pointer;
 }
 
-.btnIcon:active .trackPlay__likeSvg,
-.btnIcon:active .trackPlay__dislikeSvg {
+.btnIcon_active .trackPlay__likeSvg,
+.btnIcon_active .trackPlay__dislikeSvg {
     fill: #696969;
     stroke: #ffffff;
     cursor: pointer;
