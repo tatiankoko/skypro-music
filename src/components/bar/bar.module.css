@@ -22,6 +22,12 @@
     background: #2e2e2e;
 }
 
+.bar__playerProgress::-webkit-progress-value {
+    background-color: white;
+    /*border-radius: 8px;*/
+    transition: width 0.3s ease;
+}
+
 .bar__playerBlock {
     height: 73px;
     display: -webkit-box;
@@ -280,6 +286,7 @@
     -webkit-box-pack: end;
     -ms-flex-pack: end;
     justify-content: end;
+    height: 100%;
 }
 
 .volume__image {
@@ -296,41 +303,52 @@
 
 .volume__progress {
     width: 109px;
+    height: 100%;
     display: flex;
     align-items: center;
 }
 
 .volume__progressLine {
+    margin-top: 2px;
     width: 100%;
-    height: 2px;
+    height: 100%;
     appearance: none;
-    background: #797979;
+    background: transparent;
     border-radius: 5px;
     outline: none;
     cursor: pointer;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
 }
 
 .volume__progressLine::-webkit-slider-runnable-track {
+    box-sizing: border-box;
     height: 2px;
-    background: #797979;
+    background: transparent;
     border-radius: 5px;
 }
 
 .volume__progressLine::-webkit-slider-thumb {
+    box-sizing: border-box;
     appearance: none;
-    width: 16px;
-    height: 16px;
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
     background: #1a1a1a;
-    border: 2px solid white;
+    border: none;
+    box-shadow: 0 0 0 2px inset white;
     border-radius: 50%;
     position: relative;
     margin-top: -7px;
+    transition: 300ms;
+
+    border-image:
+            linear-gradient(90deg, white 50%, #797979 0)
+            0 1 /
+            calc(50% - 1px)
+            100vw/0 100vw;
 }
-
-
-
-
-
 
 .btn {
     cursor: pointer;

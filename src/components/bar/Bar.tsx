@@ -1,12 +1,82 @@
+'use client';
+
 import Link from 'next/link';
 import styles from './bar.module.css';
 import classNames from 'classnames';
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { ChangeEvent, useRef, useState } from 'react';
+import { setIsPlaying } from '@/store/features/trackSlice';
 
 export default function Bar() {
+  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
+  const dispatch = useAppDispatch();
+  const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [volume, setVolume] = useState(
+    audioRef?.current ? audioRef.current.volume : 0.5,
+  );
+
+  if (audioRef && audioRef.current) {
+    if (isPlaying) audioRef.current.play();
+    else audioRef.current.pause();
+  }
+
+  const togglePlay = () => {
+    if (!audioRef.current) {
+      return;
+    }
+
+    if (audioRef.current.paused) {
+      audioRef.current
+        .play()
+        .then(() => dispatch(setIsPlaying(true)))
+        .catch(() => dispatch(setIsPlaying(false)));
+    } else {
+      audioRef.current.pause();
+      dispatch(setIsPlaying(false));
+    }
+  };
+
+  const onEnded = () => dispatch(setIsPlaying(false));
+
+  const handleTimeUpdate = () => {
+    const audio: HTMLAudioElement | null = audioRef.current;
+
+    if (!audio) return;
+
+    const currentProgress = audio.duration
+      ? (audio.currentTime / audio.duration) * 100
+      : 0;
+
+    setProgress(currentProgress);
+  };
+
+  const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const v: number = parseFloat(event.target.value);
+
+    setVolume(v);
+
+    if (audioRef.current) audioRef.current.volume = v;
+  };
+
+  if (!currentTrack) return <></>;
+
   return (
     <div className={styles.bar}>
+      <audio
+        ref={audioRef}
+        src={currentTrack?.track_file}
+        onTimeUpdate={handleTimeUpdate}
+        style={{ display: 'none' }}
+        onEnded={onEnded}
+      ></audio>
       <div className={styles.bar__content}>
-        <div className={styles.bar__playerProgress}></div>
+        <progress
+          className={styles.bar__playerProgress}
+          value={progress}
+          max={100}
+        ></progress>
         <div className={styles.bar__playerBlock}>
           <div className={styles.bar__player}>
             <div className={styles.player__controls}>
@@ -15,9 +85,16 @@ export default function Bar() {
                   <use xlinkHref="/img/icon/sprite.svg#icon-prev"></use>
                 </svg>
               </div>
-              <div className={classNames(styles.player__btnPlay, styles.btn)}>
+              <div
+                className={classNames(styles.player__btnPlay, styles.btn)}
+                onClick={togglePlay}
+              >
                 <svg className={styles.player__btnPlaySvg}>
-                  <use xlinkHref="/img/icon/sprite.svg#icon-play"></use>
+                  {isPlaying ? (
+                    <use xlinkHref="/img/icon/sprite.svg#icon-pause"></use>
+                  ) : (
+                    <use xlinkHref="/img/icon/sprite.svg#icon-play"></use>
+                  )}
                 </svg>
               </div>
               <div className={styles.player__btnNext}>
@@ -53,12 +130,12 @@ export default function Bar() {
                 </div>
                 <div className={styles.trackPlay__author}>
                   <Link className={styles.trackPlay__authorLink} href="">
-                    Ты та...
+                    {currentTrack.name}
                   </Link>
                 </div>
                 <div className={styles.trackPlay__album}>
                   <Link className={styles.trackPlay__albumLink} href="">
-                    Баста
+                    {currentTrack.author}
                   </Link>
                 </div>
               </div>
@@ -102,6 +179,11 @@ export default function Bar() {
                   )}
                   type="range"
                   name="range"
+                  min={0.0}
+                  max={1.0}
+                  step={0.1}
+                  value={volume}
+                  onChange={handleVolumeChange}
                 />
               </div>
             </div>
