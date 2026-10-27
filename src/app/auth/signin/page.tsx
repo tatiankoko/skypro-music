@@ -62,7 +62,7 @@ export default function SignIn() {
 
   return (
     <>
-      <a href="/music/main">
+      <a href="/home/main">
         <div className={styles.modal__logo}>
           <img src="/img/logo_modal.png" alt="logo" />
         </div>

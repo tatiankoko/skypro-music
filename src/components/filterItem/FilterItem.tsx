@@ -1,7 +1,6 @@
 import styles from './filterItem.module.css';
 import { getUniqueValuesByKey } from '@/utils/helper';
 import { TrackType } from '@/sharedTypes/sharedTypes';
-import { data } from '@/data';
 import classNames from 'classnames';
 import { useCallback, useState } from 'react';
 
@@ -10,6 +9,7 @@ type filterItemProp = {
   name: keyof TrackType | 'year';
   expanded: boolean;
   onClick: (name: string) => void;
+  tracks: TrackType[];
 };
 
 export default function FilterItem({
@@ -17,6 +17,7 @@ export default function FilterItem({
   name,
   expanded,
   onClick,
+  tracks,
 }: filterItemProp) {
   const yearFilter: string[] = [
     'По умолчанию',
@@ -27,7 +28,7 @@ export default function FilterItem({
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const uniqueValuesByKey =
-    name === 'year' ? yearFilter : getUniqueValuesByKey(data, name);
+    name === 'year' ? yearFilter : getUniqueValuesByKey(tracks, name);
 
   const handleFilterItemClick = useCallback((item: string) => {
     setSelectedItems((prev) => {

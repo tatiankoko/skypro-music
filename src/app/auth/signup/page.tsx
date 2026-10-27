@@ -5,7 +5,7 @@ import styles from './signup.module.css';
 export default function SignUp() {
   return (
     <>
-      <Link href="/music/main">
+      <Link href="/home/main">
         <div className={styles.modal__logo}>
           <img src="/img/logo_modal.png" alt="logo" />
         </div>

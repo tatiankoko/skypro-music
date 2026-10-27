@@ -3,8 +3,13 @@
 import styles from './filter.module.css';
 import { useState } from 'react';
 import FilterItem from '@/components/filterItem/FilterItem';
+import { TrackType } from '@/sharedTypes/sharedTypes';
 
-export default function Filter() {
+type filterProps = {
+  tracks: TrackType[];
+};
+
+export default function Filter({ tracks }: filterProps) {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   return (
@@ -17,6 +22,7 @@ export default function Filter() {
         onClick={() =>
           setActiveFilter(activeFilter === 'исполнителю' ? null : 'исполнителю')
         }
+        tracks={tracks}
       />
       <FilterItem
         title={'году выпуска'}
@@ -27,6 +33,7 @@ export default function Filter() {
             activeFilter === 'году выпуска' ? null : 'году выпуска',
           )
         }
+        tracks={tracks}
       />
       <FilterItem
         title={'жанру'}
@@ -35,6 +42,7 @@ export default function Filter() {
         onClick={() =>
           setActiveFilter(activeFilter === 'жанру' ? null : 'жанру')
         }
+        tracks={tracks}
       />
     </div>
   );
