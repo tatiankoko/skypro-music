@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import styles from '@/app/home/main/page.module.css';
+import styles from './home.module.css';
 import Nav from '@/components/nav/Nav';
 import Sidebar from '@/components/sidebar/Sidebar';
 import Bar from '@/components/bar/Bar';

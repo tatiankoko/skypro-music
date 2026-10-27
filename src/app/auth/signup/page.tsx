@@ -1,8 +1,83 @@
+'use client';
+
 import Link from 'next/link';
 import classNames from 'classnames';
 import styles from './signup.module.css';
+import React, { ChangeEvent, useState } from 'react';
+import { registerUser } from '@/services/auth/authApi';
+import { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
 
 export default function SignUp() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const onChangeEmail = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const onChangePassword = (event: ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+    setUsername(event.target.value);
+    /*setUsername(event.target.value.split('@')[0] || event.target.value);*/
+  };
+
+  const onChangeConfirmPassword = (event: ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(event.target.value);
+  };
+
+  const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    setErrorMessage('');
+
+    if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
+      return setErrorMessage('Заполните все поля');
+    }
+
+    if (password !== confirmPassword) {
+      return setErrorMessage('Пароли не совпадают');
+    }
+
+    setLoading(true);
+
+    console.log('USERNAME ' + username);
+
+    registerUser({ email, password, username })
+      .then((user) => {
+        router.push('/auth/signin');
+      })
+      .catch((error) => {
+        if (error instanceof AxiosError) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            setErrorMessage(error.response.data.message);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+            setErrorMessage('Отсутствует интернет');
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            setErrorMessage('Неизвестная ошибка');
+          }
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
     <>
       <Link href="/home/main">
@@ -15,21 +90,33 @@ export default function SignUp() {
         type="text"
         name="login"
         placeholder="Почта"
+        onChange={onChangeEmail}
+        autoComplete="on"
       />
       <input
         className={styles.modal__input}
         type="password"
         name="password"
         placeholder="Пароль"
+        onChange={onChangePassword}
+        autoComplete="off"
       />
       <input
         className={styles.modal__input}
         type="password"
         name="password"
         placeholder="Повторите пароль"
+        onChange={onChangeConfirmPassword}
+        autoComplete="off"
       />
-      <div className={styles.errorContainer}></div>
-      <button className={styles.modal__btnSignupEnt}>Зарегистрироваться</button>
+      <div className={styles.errorContainer}>{errorMessage}</div>
+      <button
+        className={styles.modal__btnSignupEnt}
+        disabled={loading}
+        onClick={onSubmit}
+      >
+        Зарегистрироваться
+      </button>
     </>
   );
 }

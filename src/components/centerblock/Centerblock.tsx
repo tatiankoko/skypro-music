@@ -5,17 +5,20 @@ import Track from '@/components/track/Track';
 import Filter from '@/components/filter/Filter';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import Skeleton from 'react-loading-skeleton';
+import React from 'react';
 
 type centerBlockProps = {
   title: string;
   loading: boolean;
   playlist: TrackType[];
+  errorMessage: string;
 };
 
 export default function CenterBlock({
   title,
   loading,
   playlist,
+  errorMessage,
 }: centerBlockProps) {
   return (
     <div className={styles.centerblock}>
@@ -90,6 +93,9 @@ export default function CenterBlock({
             ))}
           </div>
         )}
+        <div className={styles.errorContainer}>
+          <p>{errorMessage}</p>
+        </div>
       </div>
     </div>
   );

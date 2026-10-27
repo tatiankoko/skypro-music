@@ -6,12 +6,14 @@ import styles from './signin.module.css';
 import React, { ChangeEvent, useState } from 'react';
 import { authUser } from '@/services/auth/authApi';
 import { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const onChangeEmail = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -32,7 +34,9 @@ export default function SignIn() {
     setLoading(true);
 
     authUser({ email, password })
-      .then((user) => {})
+      .then((user) => {
+        router.push('/home/main');
+      })
       .catch((error) => {
         if (error instanceof AxiosError) {
           if (error.response) {
@@ -73,6 +77,7 @@ export default function SignIn() {
         name="login"
         placeholder="Почта"
         onChange={onChangeEmail}
+        autoComplete="on"
       />
       <input
         className={classNames(styles.modal__input)}
@@ -80,6 +85,7 @@ export default function SignIn() {
         name="password"
         placeholder="Пароль"
         onChange={onChangePassword}
+        autoComplete="on"
       />
       <div className={styles.errorContainer}>{errorMessage}</div>
       <button
