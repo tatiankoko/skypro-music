@@ -26,4 +26,9 @@
   -ms-flex-pack: justify;
   justify-content: space-between;
   height: calc(100vh - 78px);
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 }

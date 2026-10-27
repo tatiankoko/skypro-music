@@ -4,8 +4,17 @@ import Link from 'next/link';
 import styles from './bar.module.css';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { ChangeEvent, useRef, useState } from 'react';
-import { setIsPlaying } from '@/store/features/trackSlice';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import {
+  setIsPlaying,
+  setNextTrack,
+  setPrevTrack,
+  toggleShuffle,
+} from '@/store/features/trackSlice';
+import ProgressBar from '@/components/progressBar/ProgressBar';
+import { getTimePanel } from '@/utils/helper';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function Bar() {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
@@ -16,11 +25,13 @@ export default function Bar() {
   const [volume, setVolume] = useState(
     audioRef?.current ? audioRef.current.volume : 0.5,
   );
+  const [isLoop, setIsLoop] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const isShuffle = useAppSelector((state) => state.tracks.isShuffle);
 
-  if (audioRef && audioRef.current) {
-    if (isPlaying) audioRef.current.play();
-    else audioRef.current.pause();
-  }
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [currentTrack]);
 
   const togglePlay = () => {
     if (!audioRef.current) {
@@ -38,49 +49,97 @@ export default function Bar() {
     }
   };
 
-  const onEnded = () => dispatch(setIsPlaying(false));
+  const onEnded = () => {
+    dispatch(setIsPlaying(false));
+    onNextTrack();
+  };
 
-  const handleTimeUpdate = () => {
-    const audio: HTMLAudioElement | null = audioRef.current;
+  const onTimeUpdate = () => {
+    const audio: HTMLAudioElement | null = audioRef?.current;
 
     if (!audio) return;
 
-    const currentProgress = audio.duration
-      ? (audio.currentTime / audio.duration) * 100
-      : 0;
-
-    setProgress(currentProgress);
+    setProgress(audio.currentTime);
   };
 
-  const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeProgress = (event: ChangeEvent<HTMLInputElement>) => {
+    const audio: HTMLAudioElement | null = audioRef?.current;
+
+    if (!audio) return;
+
+    audio.currentTime = Number(event.target.value);
+  };
+
+  const onVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
     const v: number = parseFloat(event.target.value);
 
     setVolume(v);
 
-    if (audioRef.current) audioRef.current.volume = v;
+    if (audioRef?.current) audioRef.current.volume = v;
   };
 
-  if (!currentTrack) return <></>;
+  const toggleLoop = () => {
+    setIsLoop(!isLoop);
+  };
+
+  const onLoadedMetadata = () => {
+    if (audioRef?.current) {
+      setIsLoaded(true);
+      audioRef.current.play();
+      dispatch(setIsPlaying(true));
+    }
+  };
+
+  const onNextTrack = () => {
+    dispatch(setNextTrack());
+  };
+
+  const onPrevTrack = () => {
+    dispatch(setPrevTrack());
+  };
+
+  const onToggleShuffle = () => {
+    dispatch(toggleShuffle());
+  };
+
+  if (!currentTrack) return null;
 
   return (
     <div className={styles.bar}>
       <audio
         ref={audioRef}
         src={currentTrack?.track_file}
-        onTimeUpdate={handleTimeUpdate}
+        onTimeUpdate={onTimeUpdate}
         style={{ display: 'none' }}
         onEnded={onEnded}
+        onLoadedMetadata={onLoadedMetadata}
+        loop={isLoop}
       ></audio>
+      <div className={styles.bar__info}>
+        <p>
+          {getTimePanel(
+            audioRef?.current ? audioRef.current.currentTime : 0,
+            audioRef?.current ? audioRef.current.duration : 0,
+          )}
+        </p>
+      </div>
       <div className={styles.bar__content}>
-        <progress
+        <ProgressBar
+          value={progress}
+          max={audioRef?.current?.duration || 0}
+          step={0.1}
+          readOnly={!isLoaded}
+          onChange={onChangeProgress}
+        ></ProgressBar>
+        {/*<progress
           className={styles.bar__playerProgress}
           value={progress}
           max={100}
-        ></progress>
+        ></progress>*/}
         <div className={styles.bar__playerBlock}>
           <div className={styles.bar__player}>
             <div className={styles.player__controls}>
-              <div className={styles.player__btnPrev}>
+              <div className={styles.player__btnPrev} onClick={onPrevTrack}>
                 <svg className={styles.player__btnPrevSvg}>
                   <use xlinkHref="/img/icon/sprite.svg#icon-prev"></use>
                 </svg>
@@ -97,13 +156,18 @@ export default function Bar() {
                   )}
                 </svg>
               </div>
-              <div className={styles.player__btnNext}>
+              <div className={styles.player__btnNext} onClick={onNextTrack}>
                 <svg className={styles.player__btnNextSvg}>
                   <use xlinkHref="/img/icon/sprite.svg#icon-next"></use>
                 </svg>
               </div>
               <div
-                className={classNames(styles.player__btnRepeat, styles.btnIcon)}
+                className={classNames(
+                  styles.player__btnRepeat,
+                  styles.btnIcon,
+                  { [styles.btnIcon_active]: isLoop },
+                )}
+                onClick={toggleLoop}
               >
                 <svg className={styles.player__btnRepeatSvg}>
                   <use xlinkHref="/img/icon/sprite.svg#icon-repeat"></use>
@@ -113,7 +177,9 @@ export default function Bar() {
                 className={classNames(
                   styles.player__btnShuffle,
                   styles.btnIcon,
+                  { [styles.btnIcon_active]: isShuffle },
                 )}
+                onClick={onToggleShuffle}
               >
                 <svg className={styles.player__btnShuffleSvg}>
                   <use xlinkHref="/img/icon/sprite.svg#icon-shuffle"></use>
@@ -124,22 +190,44 @@ export default function Bar() {
             <div className={styles.player__trackPlay}>
               <div className={styles.trackPlay__contain}>
                 <div className={styles.trackPlay__image}>
-                  <svg className={styles.trackPlay__svg}>
-                    <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
-                  </svg>
+                  {isLoaded ? (
+                    <svg className={styles.trackPlay__svg}>
+                      <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
+                    </svg>
+                  ) : (
+                    <Skeleton
+                      baseColor={'#B672FF'}
+                      highlightColor={'#B672FF'}
+                    />
+                  )}
                 </div>
                 <div className={styles.trackPlay__author}>
                   <Link className={styles.trackPlay__authorLink} href="">
-                    {currentTrack.name}
+                    {isLoaded ? (
+                      currentTrack.name
+                    ) : (
+                      <Skeleton
+                        baseColor={'#313131'}
+                        width={59}
+                        borderRadius={0}
+                      />
+                    )}
                   </Link>
                 </div>
                 <div className={styles.trackPlay__album}>
                   <Link className={styles.trackPlay__albumLink} href="">
-                    {currentTrack.author}
+                    {isLoaded ? (
+                      currentTrack.author
+                    ) : (
+                      <Skeleton
+                        baseColor={'#313131'}
+                        width={59}
+                        borderRadius={0}
+                      />
+                    )}
                   </Link>
                 </div>
               </div>
-
               <div className={styles.trackPlay__dislike}>
                 <div
                   className={classNames(
@@ -183,7 +271,7 @@ export default function Bar() {
                   max={1.0}
                   step={0.1}
                   value={volume}
-                  onChange={handleVolumeChange}
+                  onChange={onVolumeChange}
                 />
               </div>
             </div>
