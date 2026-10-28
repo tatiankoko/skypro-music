@@ -5,13 +5,19 @@ import React, { useEffect, useState } from 'react';
 import { getTracks } from '@/services/tracks/tracksApi';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import { AxiosError } from 'axios';
+import { setCurrentTrack, setIsPlaying } from '@/store/features/trackSlice';
+import { useAppDispatch } from '@/store/store';
 
 export default function Home() {
+  const dispatch = useAppDispatch();
   const [tracks, setTracks] = useState<TrackType[]>([]);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    dispatch(setCurrentTrack(null as unknown as TrackType));
+    dispatch(setIsPlaying(false));
+
     getTracks()
       .then((result) => {
         setTracks(result);

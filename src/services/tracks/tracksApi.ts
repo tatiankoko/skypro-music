@@ -19,7 +19,6 @@ type tracksByIdResponse = {
 
 export const getTracksById = (id: number): Promise<tracksByIdResponse> => {
   return axios.get(BASE_URL + `/catalog/selection/${id}/`).then((response) => {
-    /*console.log(response.data.data);*/
     return response.data.data;
   });
 };
