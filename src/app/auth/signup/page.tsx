@@ -23,8 +23,7 @@ export default function SignUp() {
 
   const onChangePassword = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
-    setUsername(event.target.value);
-    /*setUsername(event.target.value.split('@')[0] || event.target.value);*/
+    setUsername(event.target.value.split('@')[0] || event.target.value);
   };
 
   const onChangeConfirmPassword = (event: ChangeEvent<HTMLInputElement>) => {
@@ -45,30 +44,17 @@ export default function SignUp() {
 
     setLoading(true);
 
-    console.log('USERNAME ' + username);
-
     registerUser({ email, password, username })
-      .then((user) => {
+      .then(() => {
         router.push('/auth/signin');
       })
       .catch((error) => {
         if (error instanceof AxiosError) {
           if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
             setErrorMessage(error.response.data.message);
           } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(error.request);
             setErrorMessage('Отсутствует интернет');
           } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
             setErrorMessage('Неизвестная ошибка');
           }
         }

@@ -4,9 +4,19 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './nav.module.css';
 import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { setLogout } from '@/store/features/authSlice';
 
 export default function Nav() {
+  const dispatch = useAppDispatch();
   const [showNav, setShowNav] = useState(false);
+  const isAuth = useAppSelector((state) => state.user.isAuth);
+
+  const onLogClick = () => {
+    if (isAuth) {
+      dispatch(setLogout());
+    }
+  };
 
   return (
     <nav className={styles.main__nav}>
@@ -38,8 +48,12 @@ export default function Nav() {
               </Link>
             </li>
             <li className={styles.menu__item}>
-              <Link href="/auth/signin" className={styles.menu__link}>
-                Войти
+              <Link
+                href="/auth/signin"
+                className={styles.menu__link}
+                onClick={onLogClick}
+              >
+                {isAuth ? 'Выйти' : 'Войти'}
               </Link>
             </li>
           </ul>

@@ -13,12 +13,16 @@ type authUserResponse = {
 };
 
 export const authUser = (data: authUserProps): Promise<authUserResponse> => {
-  return axios.post(BASE_URL + '/user/login/', data, {
-    headers: {
-      // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
-      'content-type': 'application/json',
-    },
-  });
+  return axios
+    .post(BASE_URL + '/user/login/', data, {
+      headers: {
+        // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
+        'content-type': 'application/json',
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
 };
 
 type regUserProps = {
@@ -38,10 +42,14 @@ type regUserResponse = {
 };
 
 export const registerUser = (data: regUserProps): Promise<regUserResponse> => {
-  return axios.post(BASE_URL + '/user/signup/', data, {
-    headers: {
-      // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
-      'content-type': 'application/json',
-    },
-  });
+  return axios
+    .post(BASE_URL + '/user/signup/', data, {
+      headers: {
+        // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
+        'content-type': 'application/json',
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
 };
