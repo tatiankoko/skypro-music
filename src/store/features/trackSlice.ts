@@ -75,4 +75,5 @@ export const {
   setNextTrack,
   setPrevTrack,
 } = trackSlice.actions;
+
 export const trackSliceReducer = trackSlice.reducer;

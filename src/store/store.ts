@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
   TypedUseSelectorHook,
   useDispatch,
@@ -6,28 +6,15 @@ import {
   useStore,
 } from 'react-redux';
 import { trackSliceReducer } from '@/store/features/trackSlice';
-
-const initialState = {
-  tracks: trackSliceReducer(undefined, { type: 'init' }),
-};
-
-const rootReducer = (
-  state = initialState,
-  action: Parameters<typeof trackSliceReducer>[1],
-) => ({
-  tracks: trackSliceReducer(state.tracks, action),
-});
+import { authSliceReducer } from '@/store/features/authSlice';
 
 export const makeStore = () => {
   return configureStore({
-    reducer: rootReducer,
-  });
-
-  /*return configureStore({
     reducer: combineReducers({
       tracks: trackSliceReducer,
+      user: authSliceReducer,
     }),
-  });*/
+  });
 };
 
 // Infer the type of makeStore

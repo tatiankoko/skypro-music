@@ -1,16 +1,20 @@
-import styles from './page.module.css';
-import Bar from '@/components/bar/Bar';
+import { ReactNode } from 'react';
+import styles from './home.module.css';
 import Nav from '@/components/nav/Nav';
-import CenterBlock from '@/components/centerblock/Centerblock';
 import Sidebar from '@/components/sidebar/Sidebar';
+import Bar from '@/components/bar/Bar';
 
-export default function Home() {
+interface HomeLayoutProps {
+  children: ReactNode;
+}
+
+export default function HomeLayout({ children }: HomeLayoutProps) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <main className={styles.main}>
           <Nav />
-          <CenterBlock />
+          {children}
           <Sidebar />
         </main>
         <Bar />
