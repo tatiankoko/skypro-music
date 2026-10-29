@@ -11,7 +11,7 @@ type centerBlockProps = {
   title: string;
   loading: boolean;
   playlist: TrackType[];
-  errorMessage: string;
+  errorMessage: string | null;
 };
 
 export default function CenterBlock({

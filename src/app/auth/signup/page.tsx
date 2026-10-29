@@ -53,7 +53,7 @@ export default function SignUp() {
           if (error.response) {
             setErrorMessage(error.response.data.message);
           } else if (error.request) {
-            setErrorMessage('Отсутствует интернет');
+            setErrorMessage('Произошла ошибка. Попробуйте позже');
           } else {
             setErrorMessage('Неизвестная ошибка');
           }

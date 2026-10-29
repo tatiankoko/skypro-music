@@ -53,3 +53,27 @@ export const registerUser = (data: regUserProps): Promise<regUserResponse> => {
       return response.data;
     });
 };
+
+type accessTokenType = {
+  access: string;
+};
+
+type refreshTokenType = {
+  refresh: string;
+};
+
+type tokensType = accessTokenType & refreshTokenType;
+
+export const getTokens = (data: authUserProps): Promise<tokensType> => {
+  return axios.post(BASE_URL + '/user/token/', data).then((response) => {
+    return response.data;
+  });
+};
+
+export const refreshToken = (data: string): Promise<accessTokenType> => {
+  return axios
+    .post(BASE_URL + '/user/token/refresh/', data)
+    .then((response) => {
+      return response.data;
+    });
+};
