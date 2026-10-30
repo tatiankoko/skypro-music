@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styles from './bar.module.css';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import {
   setIsPlaying,
   setNextTrack,
@@ -30,7 +30,7 @@ export default function Bar() {
   const [isLoop, setIsLoop] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const isShuffle = useAppSelector((state) => state.tracks.isShuffle);
-  const { toggleLike, isLike } = useLikeTrack(currentTrack);
+  const { toggleLike, isLike, isLoading } = useLikeTrack(currentTrack);
 
   useEffect(() => {
     setIsLoaded(false);
@@ -230,8 +230,13 @@ export default function Bar() {
                     styles.player__btnShuffle,
                     styles.btnIcon,
                   )}
+                  aria-disabled={isLoading}
                 >
-                  <Like isLike={isLike} onToggleLike={toggleLike} />
+                  <Like
+                    isLike={isLike}
+                    onToggleLike={toggleLike}
+                    disabled={isLoading}
+                  />
                 </div>
               </div>
             </div>

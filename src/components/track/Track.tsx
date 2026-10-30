@@ -20,7 +20,7 @@ export default function Track({ track, playlist }: TrackTypeProp) {
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
-  const { toggleLike, isLike } = useLikeTrack(track);
+  const { toggleLike, isLike, isLoading } = useLikeTrack(track);
   const isAuth = useAppSelector((state) => state.user.isAuth);
 
   const onClickTrack = () => {
@@ -73,8 +73,12 @@ export default function Track({ track, playlist }: TrackTypeProp) {
             {track.album}
           </Link>
         </div>
-        <div className="track__time">
-          <Like isLike={isLike} onToggleLike={onToggleLike} />
+        <div className="track__time" aria-disabled={isLoading}>
+          <Like
+            isLike={isLike}
+            onToggleLike={onToggleLike}
+            disabled={isLoading}
+          />
           <span className={styles.track__timeText}>
             {formatTime(track.duration_in_seconds)}
           </span>

@@ -4,6 +4,7 @@ import styles from './user.module.css';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { setLogout } from '@/store/features/authSlice';
 import Link from 'next/link';
+import { clearLiked } from '@/store/features/trackSlice';
 
 export default function User() {
   const dispatch = useAppDispatch();
@@ -13,6 +14,7 @@ export default function User() {
   const onLogoutClick = () => {
     if (isAuth) {
       dispatch(setLogout());
+      dispatch(clearLiked());
     }
   };
 

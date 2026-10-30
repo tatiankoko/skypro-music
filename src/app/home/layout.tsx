@@ -7,6 +7,7 @@ import Sidebar from '@/components/sidebar/Sidebar';
 import Bar from '@/components/bar/Bar';
 import FetchingTracks from '@/components/fetchingTracks/FetchingTracks';
 import { useInitAuth } from '@/hooks/useInitAuth';
+import { useFavoriteTracks } from '@/hooks/useFavoriteTracks';
 
 interface HomeLayoutProps {
   children: ReactNode;
@@ -14,6 +15,7 @@ interface HomeLayoutProps {
 
 export default function HomeLayout({ children }: HomeLayoutProps) {
   useInitAuth();
+  useFavoriteTracks();
 
   return (
     <div className={styles.wrapper}>

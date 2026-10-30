@@ -4,21 +4,17 @@ import { useAppDispatch, useAppSelector } from '@/store/store';
 import { useEffect } from 'react';
 import {
   setAllTracks,
-  setCurrentTrack,
   setFetchError,
   setFetchIsLoading,
 } from '@/store/features/trackSlice';
 import { getTracks } from '@/services/tracks/tracksApi';
 import { AxiosError } from 'axios';
-import { TrackType } from '@/sharedTypes/sharedTypes';
 
 export default function FetchingTracks() {
   const dispatch = useAppDispatch();
   const { allTracks } = useAppSelector((state) => state.tracks);
 
   useEffect(() => {
-    dispatch(setCurrentTrack(null as unknown as TrackType));
-
     if (allTracks.length > 0) {
       dispatch(setAllTracks(allTracks));
     } else {
@@ -42,8 +38,6 @@ export default function FetchingTracks() {
         .finally(() => {
           dispatch(setFetchIsLoading(false));
         });
-    }
-    {
     }
   }, []);
 

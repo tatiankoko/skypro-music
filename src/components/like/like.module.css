@@ -1,4 +1,4 @@
-.track__timeSvg {
+.like__svg {
     width: 14px;
     height: 12px;
     margin-right: 17px; /* ??? */
@@ -7,15 +7,15 @@
     cursor: pointer;
 }
 
-.track__timeSvg .state_hover {
+.like__svg .state_hover {
     display: none;
 }
 
-.track__timeSvg:hover .state_default {
+.like__svg:hover .state_default {
     display: none;
 }
 
-.track__timeSvg:hover .state_hover {
+.like__svg:hover .state_hover {
     display: block;
 }
 
@@ -37,4 +37,9 @@
 .state_hover:active {
     fill: #696969;
     stroke: #FFFFFF;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
 }

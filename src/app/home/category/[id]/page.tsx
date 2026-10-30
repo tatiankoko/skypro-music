@@ -6,11 +6,10 @@ import { getTracksById } from '@/services/tracks/tracksApi';
 import { AxiosError } from 'axios';
 import CenterBlock from '@/components/centerblock/Centerblock';
 import { defaultTitles } from '@/app/home/constants';
-import { setCurrentTrack } from '@/store/features/trackSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 
 export default function CategoryPage() {
-  const dispatch = useAppDispatch();
+  useAppDispatch();
   const { allTracks, fetchIsLoading, fetchError } = useAppSelector(
     (state) => state.tracks,
   );
@@ -22,8 +21,6 @@ export default function CategoryPage() {
   const [title, setTitle] = useState<string>(defaultTitles[+params.id]);
 
   useEffect(() => {
-    dispatch(setCurrentTrack(null as unknown as TrackType));
-
     setLoading(true);
 
     if (!fetchIsLoading && allTracks.length) {

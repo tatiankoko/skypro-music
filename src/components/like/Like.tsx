@@ -5,11 +5,17 @@ import React from 'react';
 type likeProps = {
   isLike: boolean;
   onToggleLike: (event: React.MouseEvent<HTMLOrSVGElement, MouseEvent>) => void;
+  disabled: boolean;
 };
 
-export default function Like({ isLike, onToggleLike }: likeProps) {
+export default function Like({ isLike, onToggleLike, disabled }: likeProps) {
   return (
-    <svg className={styles.track__timeSvg} onClick={onToggleLike}>
+    <svg
+      className={classNames(styles.like__svg, {
+        [styles.disabled]: disabled,
+      })}
+      onClick={onToggleLike}
+    >
       <use
         className={classNames(styles.state_default, {
           [styles.state_filled]: isLike,
