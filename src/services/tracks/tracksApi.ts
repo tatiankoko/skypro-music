@@ -44,3 +44,15 @@ export const removeLike = (access: string, id: number) => {
     },
   });
 };
+
+export const getFavoriteTracks = (access: string): Promise<TrackType[]> => {
+  return axios
+    .get(BASE_URL + '/catalog/track/favorite/all/', {
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+    })
+    .then((response) => {
+      return response.data.data;
+    });
+};

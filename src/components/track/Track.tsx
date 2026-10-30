@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/store/store';
 import { setCurrentTrack, setPlaylist } from '@/store/features/trackSlice';
 import classNames from 'classnames';
 import { useLikeTrack } from '@/hooks/useLikeTracks';
+import React, { useCallback } from 'react';
 
 type TrackTypeProp = {
   track: TrackType;
@@ -19,6 +20,7 @@ export default function Track({ track, playlist }: TrackTypeProp) {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
   const { toggleLike, isLike } = useLikeTrack(track);
+  const isAuth = useAppSelector((state) => state.user.isAuth);
 
   const onClickTrack = () => {
     if (track._id !== currentTrack?._id) {
@@ -26,6 +28,17 @@ export default function Track({ track, playlist }: TrackTypeProp) {
       dispatch(setPlaylist(playlist));
     }
   };
+
+  const onToggleLike = useCallback(
+    (event: React.MouseEvent<HTMLOrSVGElement, MouseEvent>) => {
+      event.stopPropagation();
+
+      if (!isAuth) return;
+
+      toggleLike();
+    },
+    [dispatch, isAuth, isLike, track],
+  );
 
   return (
     <div className={styles.playlist__item} onClick={onClickTrack}>
@@ -60,7 +73,7 @@ export default function Track({ track, playlist }: TrackTypeProp) {
           </Link>
         </div>
         <div className="track__time">
-          <svg className={styles.track__timeSvg} onClick={toggleLike}>
+          <svg className={styles.track__timeSvg} onClick={onToggleLike}>
             <use
               xlinkHref={`/img/icon/sprite.svg#${isLike ? 'icon-dislike' : 'icon-like'}`}
             ></use>

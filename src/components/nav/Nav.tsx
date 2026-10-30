@@ -44,7 +44,7 @@ export default function Nav() {
             </li>
             {isAuth ? (
               <li className={styles.menu__item}>
-                <Link href="#" className={styles.menu__link}>
+                <Link href="/home/favorites" className={styles.menu__link}>
                   Мой плейлист
                 </Link>
               </li>
