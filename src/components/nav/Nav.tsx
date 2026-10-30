@@ -6,6 +6,7 @@ import styles from './nav.module.css';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { setLogout } from '@/store/features/authSlice';
+import { clearLiked } from '@/store/features/trackSlice';
 
 export default function Nav() {
   const dispatch = useAppDispatch();
@@ -15,6 +16,7 @@ export default function Nav() {
   const onLogClick = () => {
     if (isAuth) {
       dispatch(setLogout());
+      dispatch(clearLiked());
     }
   };
 
@@ -51,7 +53,7 @@ export default function Nav() {
             ) : null}
             <li className={styles.menu__item}>
               <Link
-                href="/auth/signin"
+                href={isAuth ? '/home/main' : '/auth/signin'}
                 className={styles.menu__link}
                 onClick={onLogClick}
               >

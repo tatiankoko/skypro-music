@@ -17,13 +17,13 @@ export default function Like({ isLike, onToggleLike, disabled }: likeProps) {
       onClick={onToggleLike}
     >
       <use
-        className={classNames(styles.state_default, {
-          [styles.state_filled]: isLike,
+        className={classNames(styles.state__default, {
+          [styles.filled]: isLike,
         })}
         xlinkHref={'/img/icon/sprite.svg#icon-like'}
       ></use>
       <use
-        className={classNames(styles.state_hover)}
+        className={classNames(styles.state__hover)}
         xlinkHref={`/img/icon/sprite.svg#${isLike ? 'icon-dislike' : 'icon-like'}`}
       ></use>
     </svg>

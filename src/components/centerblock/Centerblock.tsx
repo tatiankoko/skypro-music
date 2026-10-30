@@ -5,7 +5,8 @@ import Track from '@/components/track/Track';
 import Filter from '@/components/filter/Filter';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import Skeleton from 'react-loading-skeleton';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 type centerBlockProps = {
   title: string;
@@ -20,6 +21,10 @@ export default function CenterBlock({
   playlist,
   errorMessage,
 }: centerBlockProps) {
+  useEffect(() => {
+    toast.error(errorMessage);
+  }, [errorMessage]);
+
   return (
     <div className={styles.centerblock}>
       <Search />
@@ -93,9 +98,6 @@ export default function CenterBlock({
             ))}
           </div>
         )}
-        <div className={styles.errorContainer}>
-          <p>{errorMessage}</p>
-        </div>
       </div>
     </div>
   );

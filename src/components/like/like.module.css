@@ -1,40 +1,40 @@
 .like__svg {
     width: 14px;
     height: 12px;
-    margin-right: 17px; /* ??? */
+    margin-right: 17px;
     fill: transparent;
     stroke: #696969;
     cursor: pointer;
 }
 
-.like__svg .state_hover {
+.like__svg .state__hover {
     display: none;
 }
 
-.like__svg:hover .state_default {
+.like__svg:hover .state__default {
     display: none;
 }
 
-.like__svg:hover .state_hover {
+.like__svg:hover .state__hover {
     display: block;
 }
 
-.state_filled {
+.filled {
     fill: #B672FF;
 }
 
-.state_default {
+.state__default {
 }
-.state_default:active {
+.state__default:active {
     fill: #696969;
     stroke: #FFFFFF;
 }
 
-.state_hover {
+.state__hover {
     width: 14.34px;
     stroke: #FFFFFF;
 }
-.state_hover:active {
+.state__hover:active {
     fill: #696969;
     stroke: #FFFFFF;
 }
