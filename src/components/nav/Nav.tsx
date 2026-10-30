@@ -42,11 +42,13 @@ export default function Nav() {
                 Главное
               </Link>
             </li>
-            <li className={styles.menu__item}>
-              <Link href="#" className={styles.menu__link}>
-                Мой плейлист
-              </Link>
-            </li>
+            {isAuth ? (
+              <li className={styles.menu__item}>
+                <Link href="#" className={styles.menu__link}>
+                  Мой плейлист
+                </Link>
+              </li>
+            ) : null}
             <li className={styles.menu__item}>
               <Link
                 href="/auth/signin"

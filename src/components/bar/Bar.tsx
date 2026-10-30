@@ -15,6 +15,7 @@ import ProgressBar from '@/components/progressBar/ProgressBar';
 import { getTimePanel } from '@/utils/helper';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { useLikeTrack } from '@/hooks/useLikeTracks';
 
 export default function Bar() {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
@@ -28,6 +29,7 @@ export default function Bar() {
   const [isLoop, setIsLoop] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const isShuffle = useAppSelector((state) => state.tracks.isShuffle);
+  const { toggleLike, isLike } = useLikeTrack(currentTrack);
 
   useEffect(() => {
     setIsLoaded(false);
@@ -149,11 +151,9 @@ export default function Bar() {
                 onClick={togglePlay}
               >
                 <svg className={styles.player__btnPlaySvg}>
-                  {isPlaying ? (
-                    <use xlinkHref="/img/icon/sprite.svg#icon-pause"></use>
-                  ) : (
-                    <use xlinkHref="/img/icon/sprite.svg#icon-play"></use>
-                  )}
+                  <use
+                    xlinkHref={`/img/icon/sprite.svg#${isPlaying ? 'icon-pause' : 'icon-play'}`}
+                  ></use>
                 </svg>
               </div>
               <div className={styles.player__btnNext} onClick={onNextTrack}>
@@ -235,8 +235,17 @@ export default function Bar() {
                     styles.btnIcon,
                   )}
                 >
-                  <svg className={styles.trackPlay__likeSvg}>
-                    <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
+                  <svg
+                    className={
+                      isLike
+                        ? styles.trackPlay__likeSvg
+                        : styles.trackPlay__dislikeSvg
+                    }
+                    onClick={toggleLike}
+                  >
+                    <use
+                      xlinkHref={`/img/icon/sprite.svg#${isLike ? 'icon-dislike' : 'icon-like'}`}
+                    ></use>
                   </svg>
                 </div>
                 {/*<div

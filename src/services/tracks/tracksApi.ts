@@ -21,3 +21,26 @@ export const getTracksById = (id: number): Promise<tracksByIdResponse> => {
     return response.data.data;
   });
 };
+
+export const addLike = (access: string, id: number) => {
+  return axios.post(
+    BASE_URL + `/catalog/track/${id}/favorite/`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+    },
+  );
+  /*.then((response) => {
+      return response.data.data;
+    })*/
+};
+
+export const removeLike = (access: string, id: number) => {
+  return axios.delete(BASE_URL + `/catalog/track/${id}/favorite/`, {
+    headers: {
+      Authorization: `Bearer ${access}`,
+    },
+  });
+};
