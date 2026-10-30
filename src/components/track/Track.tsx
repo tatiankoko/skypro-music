@@ -9,6 +9,7 @@ import { setCurrentTrack, setPlaylist } from '@/store/features/trackSlice';
 import classNames from 'classnames';
 import { useLikeTrack } from '@/hooks/useLikeTracks';
 import React, { useCallback } from 'react';
+import Like from '@/components/like/Like';
 
 type TrackTypeProp = {
   track: TrackType;
@@ -73,11 +74,7 @@ export default function Track({ track, playlist }: TrackTypeProp) {
           </Link>
         </div>
         <div className="track__time">
-          <svg className={styles.track__timeSvg} onClick={onToggleLike}>
-            <use
-              xlinkHref={`/img/icon/sprite.svg#${isLike ? 'icon-dislike' : 'icon-like'}`}
-            ></use>
-          </svg>
+          <Like isLike={isLike} onToggleLike={onToggleLike} />
           <span className={styles.track__timeText}>
             {formatTime(track.duration_in_seconds)}
           </span>

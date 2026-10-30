@@ -16,6 +16,7 @@ import { getTimePanel } from '@/utils/helper';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useLikeTrack } from '@/hooks/useLikeTracks';
+import Like from '@/components/like/Like';
 
 export default function Bar() {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
@@ -133,11 +134,6 @@ export default function Bar() {
           readOnly={!isLoaded}
           onChange={onChangeProgress}
         ></ProgressBar>
-        {/*<progress
-          className={styles.bar__playerProgress}
-          value={progress}
-          max={100}
-        ></progress>*/}
         <div className={styles.bar__playerBlock}>
           <div className={styles.bar__player}>
             <div className={styles.player__controls}>
@@ -235,29 +231,8 @@ export default function Bar() {
                     styles.btnIcon,
                   )}
                 >
-                  <svg
-                    className={
-                      isLike
-                        ? styles.trackPlay__likeSvg
-                        : styles.trackPlay__dislikeSvg
-                    }
-                    onClick={toggleLike}
-                  >
-                    <use
-                      xlinkHref={`/img/icon/sprite.svg#${isLike ? 'icon-dislike' : 'icon-like'}`}
-                    ></use>
-                  </svg>
+                  <Like isLike={isLike} onToggleLike={toggleLike} />
                 </div>
-                {/*<div
-                  className={classNames(
-                    styles.trackPlay__dislike,
-                    styles.btnIcon,
-                  )}
-                >
-                  <svg className={styles.trackPlay__dislikeSvg}>
-                    <use xlinkHref="/img/icon/sprite.svg#icon-dislike"></use>
-                  </svg>
-                </div>*/}
               </div>
             </div>
           </div>

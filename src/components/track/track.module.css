@@ -134,15 +134,6 @@
     color: #696969;
 }
 
-.track__timeSvg {
-    width: 14px;
-    height: 12px;
-    margin-right: 17px;
-    fill: transparent;
-    stroke: #696969;
-    cursor: pointer;
-}
-
 .track__timeText {
     font-style: normal;
     font-weight: 400;

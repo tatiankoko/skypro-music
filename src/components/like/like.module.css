@@ -1,0 +1,40 @@
+.track__timeSvg {
+    width: 14px;
+    height: 12px;
+    margin-right: 17px; /* ??? */
+    fill: transparent;
+    stroke: #696969;
+    cursor: pointer;
+}
+
+.track__timeSvg .state_hover {
+    display: none;
+}
+
+.track__timeSvg:hover .state_default {
+    display: none;
+}
+
+.track__timeSvg:hover .state_hover {
+    display: block;
+}
+
+.state_filled {
+    fill: #B672FF;
+}
+
+.state_default {
+}
+.state_default:active {
+    fill: #696969;
+    stroke: #FFFFFF;
+}
+
+.state_hover {
+    width: 14.34px;
+    stroke: #FFFFFF;
+}
+.state_hover:active {
+    fill: #696969;
+    stroke: #FFFFFF;
+}
