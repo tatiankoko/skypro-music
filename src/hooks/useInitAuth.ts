@@ -4,6 +4,7 @@ import {
   setAccessToken,
   setRefreshToken,
   setUser,
+  setIsAuth,
   userType,
 } from '@/store/features/authSlice';
 
@@ -20,5 +21,6 @@ export const useInitAuth = () => {
 
     dispatch(setAccessToken(accessToken));
     dispatch(setRefreshToken(refreshToken));
+    dispatch(setIsAuth());
   }, [dispatch]);
 };
