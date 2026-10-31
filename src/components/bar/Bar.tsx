@@ -4,7 +4,13 @@ import Link from 'next/link';
 import styles from './bar.module.css';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   setIsPlaying,
   setNextTrack,
@@ -17,6 +23,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useLikeTrack } from '@/hooks/useLikeTracks';
 import Like from '@/components/like/Like';
+import { toast } from 'react-toastify';
 
 export default function Bar() {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
@@ -31,6 +38,7 @@ export default function Bar() {
   const [isLoaded, setIsLoaded] = useState(false);
   const isShuffle = useAppSelector((state) => state.tracks.isShuffle);
   const { toggleLike, isLike, isLoading } = useLikeTrack(currentTrack);
+  const isAuth = useAppSelector((state) => state.user.isAuth);
 
   useEffect(() => {
     setIsLoaded(false);
@@ -104,6 +112,15 @@ export default function Bar() {
   const onToggleShuffle = () => {
     dispatch(toggleShuffle());
   };
+
+  const onToggleLike = useCallback(() => {
+    if (!isAuth) {
+      toast.info('Ставить лайки могут только авторизованные пользователи');
+      return;
+    }
+
+    toggleLike();
+  }, [dispatch, isAuth, isLike, currentTrack]);
 
   if (!currentTrack) return null;
 
@@ -234,7 +251,7 @@ export default function Bar() {
                 >
                   <Like
                     isLike={isLike}
-                    onToggleLike={toggleLike}
+                    onToggleLike={onToggleLike}
                     disabled={isLoading}
                   />
                 </div>

@@ -1,6 +1,6 @@
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AxiosError } from 'axios';
 import { withReAuth } from '@/utils/withReAuth';
 import { addLike, removeLike } from '@/services/tracks/tracksApi';
@@ -18,7 +18,12 @@ export const useLikeTrack = (track: TrackType | null): returnTypeHook => {
   const { accessToken, refreshToken } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
-  const isLike = favoriteTracks.some((t) => t._id === track?._id);
+  const isLike = useMemo(
+    () => favoriteTracks.some((t) => t._id === track?._id),
+    [favoriteTracks, track],
+    /*track?._id,*/
+  );
+
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 

@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import { useLikeTrack } from '@/hooks/useLikeTracks';
 import React, { useCallback } from 'react';
 import Like from '@/components/like/Like';
+import { toast } from 'react-toastify';
 
 type TrackTypeProp = {
   track: TrackType;
@@ -34,7 +35,10 @@ export default function Track({ track, playlist }: TrackTypeProp) {
     (event: React.MouseEvent<HTMLOrSVGElement, MouseEvent>) => {
       event.stopPropagation();
 
-      if (!isAuth) return;
+      if (!isAuth) {
+        toast.info('Ставить лайки могут только авторизованные пользователи');
+        return;
+      }
 
       toggleLike();
     },

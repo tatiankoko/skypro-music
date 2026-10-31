@@ -2,7 +2,7 @@ import styles from './filterItem.module.css';
 import { getUniqueValuesByKey } from '@/utils/helper';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import classNames from 'classnames';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 type filterItemProp = {
   title: string;
@@ -27,8 +27,10 @@ export default function FilterItem({
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  const uniqueValuesByKey =
-    name === 'year' ? yearFilter : getUniqueValuesByKey(tracks, name);
+  const uniqueValuesByKey = useMemo(
+    () => (name === 'year' ? yearFilter : getUniqueValuesByKey(tracks, name)),
+    [tracks],
+  );
 
   const handleFilterItemClick = useCallback((item: string) => {
     setSelectedItems((prev) => {
