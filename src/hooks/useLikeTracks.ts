@@ -1,6 +1,6 @@
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { AxiosError } from 'axios';
 import { withReAuth } from '@/utils/withReAuth';
 import { addLike, removeLike } from '@/services/tracks/tracksApi';
@@ -27,7 +27,7 @@ export const useLikeTrack = (track: TrackType | null): returnTypeHook => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const toggleLike = () => {
+  const toggleLike = useCallback(() => {
     if (!accessToken || !refreshToken) {
       return setErrorMsg('Нет авторизации');
     }
@@ -62,7 +62,7 @@ export const useLikeTrack = (track: TrackType | null): returnTypeHook => {
           setIsLoading(false);
         });
     }
-  };
+  }, [dispatch, isLike, accessToken, refreshToken]);
 
   return {
     isLoading,

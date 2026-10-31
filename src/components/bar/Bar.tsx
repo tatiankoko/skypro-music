@@ -120,7 +120,7 @@ export default function Bar() {
     }
 
     toggleLike();
-  }, [dispatch, isAuth, isLike, currentTrack]);
+  }, [isAuth, toggleLike]);
 
   if (!currentTrack) return null;
 

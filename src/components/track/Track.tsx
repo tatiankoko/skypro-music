@@ -42,7 +42,7 @@ export default function Track({ track, playlist }: TrackTypeProp) {
 
       toggleLike();
     },
-    [dispatch, isAuth, isLike, track],
+    [isAuth, toggleLike],
   );
 
   return (

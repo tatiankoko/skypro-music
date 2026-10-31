@@ -29,7 +29,7 @@ export default function FilterItem({
 
   const uniqueValuesByKey = useMemo(
     () => (name === 'year' ? yearFilter : getUniqueValuesByKey(tracks, name)),
-    [tracks],
+    [name, tracks],
   );
 
   const handleFilterItemClick = useCallback((item: string) => {
