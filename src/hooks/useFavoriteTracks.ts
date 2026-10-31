@@ -1,29 +1,26 @@
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { withReAuth } from '@/utils/withReAuth';
 import { getFavoriteTracks } from '@/services/tracks/tracksApi';
 import { AxiosError } from 'axios';
-import {
-  setFavoriteTracks,
-  setFetchError,
-  setFetchIsLoading,
-} from '@/store/features/trackSlice';
+import { setFavoriteTracks } from '@/store/features/trackSlice';
 
 export const useFavoriteTracks = () => {
   const dispatch = useAppDispatch();
-  const { isAuth, accessToken, refreshToken } = useAppSelector(
-    (state) => state.user,
-  );
+  const { accessToken, refreshToken } = useAppSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const favorites = useAppSelector((state) => state.tracks.favoriteTracks);
 
   /*  useEffect(() => {}, [favoriteTracks]);*/
 
   useEffect(() => {
-    if (!isAuth || !accessToken || !refreshToken) {
-      return;
+    if (!accessToken || !refreshToken) {
+      return setErrorMsg('Нет авторизации');
     }
 
-    dispatch(setFetchIsLoading(true));
-    /*dispatch(setFetchError(null));*/
+    setIsLoading(true);
+    setErrorMsg(null);
 
     withReAuth(
       (newToken) => getFavoriteTracks(newToken || accessToken),
@@ -36,16 +33,22 @@ export const useFavoriteTracks = () => {
       .catch((error) => {
         if (error instanceof AxiosError) {
           if (error.response) {
-            dispatch(setFetchError(error.response.data.message));
+            setErrorMsg(error.response.data.message);
           } else if (error.request) {
-            dispatch(setFetchError('Произошла ошибка. Попробуйте позже'));
+            setErrorMsg('Произошла ошибка. Попробуйте позже');
           } else {
-            dispatch(setFetchError('Неизвестная ошибка'));
+            setErrorMsg('Неизвестная ошибка');
           }
         }
       })
       .finally(() => {
-        dispatch(setFetchIsLoading(false));
+        setIsLoading(false);
       });
   }, [dispatch, accessToken, refreshToken]);
+
+  return {
+    isLoading,
+    errorMsg,
+    favorites,
+  };
 };
