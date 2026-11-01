@@ -1,0 +1,64 @@
+.like__svg {
+    width: 14px;
+    height: 12px;
+    margin-right: 17px;
+    fill: transparent;
+    stroke: #696969;
+    cursor: pointer;
+}
+
+.like__svg .state__hover {
+    display: none;
+}
+
+.like__svg:hover .state__default {
+    display: none;
+}
+
+.like__svg:hover .state__hover {
+    display: block;
+}
+
+.filled {
+    fill: #B672FF;
+}
+
+.like__svg .filled {
+    fill: #b672ff;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: like-pop 220ms ease-out;
+}
+
+@keyframes like-pop {
+    0% { transform: scale(0.75); }
+    65% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .like__svg .filled {
+        animation: none;
+    }
+}
+
+.state__default {
+}
+.state__default:active {
+    fill: #696969;
+    stroke: #FFFFFF;
+}
+
+.state__hover {
+    width: 14.34px;
+    stroke: #FFFFFF;
+}
+.state__hover:active {
+    fill: #696969;
+    stroke: #FFFFFF;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}

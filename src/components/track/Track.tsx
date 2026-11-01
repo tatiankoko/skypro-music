@@ -7,6 +7,10 @@ import { TrackType } from '@/sharedTypes/sharedTypes';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { setCurrentTrack, setPlaylist } from '@/store/features/trackSlice';
 import classNames from 'classnames';
+import { useLikeTrack } from '@/hooks/useLikeTracks';
+import React, { useCallback } from 'react';
+import Like from '@/components/like/Like';
+import { toast } from 'react-toastify';
 
 type TrackTypeProp = {
   track: TrackType;
@@ -17,6 +21,8 @@ export default function Track({ track, playlist }: TrackTypeProp) {
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
+  const { toggleLike, isLike, isLoading } = useLikeTrack(track);
+  const isAuth = useAppSelector((state) => state.user.isAuth);
 
   const onClickTrack = () => {
     if (track._id !== currentTrack?._id) {
@@ -24,6 +30,20 @@ export default function Track({ track, playlist }: TrackTypeProp) {
       dispatch(setPlaylist(playlist));
     }
   };
+
+  const onToggleLike = useCallback(
+    (event: React.MouseEvent<HTMLOrSVGElement, MouseEvent>) => {
+      event.stopPropagation();
+
+      if (!isAuth) {
+        toast.info('Ставить лайки могут только авторизованные пользователи');
+        return;
+      }
+
+      toggleLike();
+    },
+    [isAuth, toggleLike],
+  );
 
   return (
     <div className={styles.playlist__item} onClick={onClickTrack}>
@@ -57,10 +77,12 @@ export default function Track({ track, playlist }: TrackTypeProp) {
             {track.album}
           </Link>
         </div>
-        <div className="track__time">
-          <svg className={styles.track__timeSvg}>
-            <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
-          </svg>
+        <div className="track__time" aria-disabled={isLoading}>
+          <Like
+            isLike={isLike}
+            onToggleLike={onToggleLike}
+            disabled={isLoading}
+          />
           <span className={styles.track__timeText}>
             {formatTime(track.duration_in_seconds)}
           </span>

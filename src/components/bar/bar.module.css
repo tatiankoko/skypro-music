@@ -47,20 +47,6 @@
     color: white;
 }
 
-/*
-.bar__playerProgress {
-    width: 100%;
-    height: 5px;
-    background: #2e2e2e;
-}
-
-.bar__playerProgress::-webkit-progress-value {
-    background-color: white;
-    !*border-radius: 8px;*!
-    transition: width 0.3s ease;
-}
-*/
-
 .bar__playerBlock {
     height: 73px;
     display: -webkit-box;
@@ -280,20 +266,6 @@
 }
 
 
-.trackPlay__dislikeSvg {
-    width: 14.34px;
-    height: 13px;
-    fill: transparent;
-    stroke: #696969;
-}
-
-.trackPlay__likeSvg {
-    width: 14px;
-    height: 12px;
-    fill: transparent;
-    stroke: #696969;
-}
-
 .bar__volumeBlock {
     width: auto;
     display: -webkit-box;
@@ -395,13 +367,6 @@
 
 .btnIcon_active svg {
     fill: transparent;
-    stroke: #ffffff;
-    cursor: pointer;
-}
-
-.btnIcon_active .trackPlay__likeSvg,
-.btnIcon_active .trackPlay__dislikeSvg {
-    fill: #696969;
     stroke: #ffffff;
     cursor: pointer;
 }

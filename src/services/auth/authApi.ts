@@ -12,17 +12,16 @@ type authUserResponse = {
   _id: number;
 };
 
-export const authUser = (data: authUserProps): Promise<authUserResponse> => {
-  return axios
-    .post(BASE_URL + '/user/login/', data, {
-      headers: {
-        // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
-        'content-type': 'application/json',
-      },
-    })
-    .then((response) => {
-      return response.data;
-    });
+export const authUser = async (
+  data: authUserProps,
+): Promise<authUserResponse> => {
+  const response = await axios.post(BASE_URL + '/user/login/', data, {
+    headers: {
+      // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
+      'content-type': 'application/json',
+    },
+  });
+  return response.data;
 };
 
 type regUserProps = {
@@ -41,14 +40,36 @@ type regUserResponse = {
   success?: boolean;
 };
 
-export const registerUser = (data: regUserProps): Promise<regUserResponse> => {
+export const registerUser = async (
+  data: regUserProps,
+): Promise<regUserResponse> => {
+  const response = await axios.post(BASE_URL + '/user/signup/', data, {
+    headers: {
+      // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
+      'content-type': 'application/json',
+    },
+  });
+  return response.data;
+};
+
+type accessTokenType = {
+  access: string;
+};
+
+type refreshTokenType = {
+  refresh: string;
+};
+
+type tokensType = accessTokenType & refreshTokenType;
+
+export const getTokens = async (data: authUserProps): Promise<tokensType> => {
+  const response = await axios.post(BASE_URL + '/user/token/', data);
+  return response.data;
+};
+
+export const refreshToken = async (data: string): Promise<accessTokenType> => {
   return axios
-    .post(BASE_URL + '/user/signup/', data, {
-      headers: {
-        // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
-        'content-type': 'application/json',
-      },
-    })
+    .post(BASE_URL + '/user/token/refresh/', { refresh: data })
     .then((response) => {
       return response.data;
     });

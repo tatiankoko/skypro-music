@@ -163,12 +163,3 @@
         cursor: pointer;
     }
 }
-
-.errorContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    font-size: 12px;
-    color: red;
-    margin: 32px 0;
-}
