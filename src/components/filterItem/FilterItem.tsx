@@ -10,6 +10,7 @@ type filterItemProp = {
   expanded: boolean;
   onClick: (name: string) => void;
   tracks: TrackType[];
+  onSelect: (value: string) => void;
 };
 
 export default function FilterItem({
@@ -18,6 +19,7 @@ export default function FilterItem({
   expanded,
   onClick,
   tracks,
+  onSelect,
 }: filterItemProp) {
   const yearFilter: string[] = [
     'По умолчанию',
@@ -33,6 +35,8 @@ export default function FilterItem({
   );
 
   const handleFilterItemClick = useCallback((item: string) => {
+    onSelect(item);
+
     setSelectedItems((prev) => {
       if (prev.includes(item)) {
         return prev.filter((i) => i !== item);

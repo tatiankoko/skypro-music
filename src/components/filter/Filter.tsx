@@ -4,6 +4,8 @@ import styles from './filter.module.css';
 import { useState } from 'react';
 import FilterItem from '@/components/filterItem/FilterItem';
 import { TrackType } from '@/sharedTypes/sharedTypes';
+import { useAppDispatch } from '@/store/store';
+import { setFilterAuthors, setFilterGenres } from '@/store/features/trackSlice';
 
 type filterProps = {
   tracks: TrackType[];
@@ -11,6 +13,19 @@ type filterProps = {
 
 export default function Filter({ tracks }: filterProps) {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+
+  const changeActiveFilter = (name: string) => {
+    setActiveFilter(activeFilter === name ? null : name);
+  };
+
+  const selectAuthor = (author: string) => {
+    dispatch(setFilterAuthors(author));
+  };
+
+  const selectGenre = (genre: string) => {
+    dispatch(setFilterGenres(genre));
+  };
 
   return (
     <div className={styles.centerblock__filter}>
@@ -19,30 +34,25 @@ export default function Filter({ tracks }: filterProps) {
         title={'исполнителю'}
         name={'author'}
         expanded={activeFilter === 'исполнителю'}
-        onClick={() =>
-          setActiveFilter(activeFilter === 'исполнителю' ? null : 'исполнителю')
-        }
+        onClick={changeActiveFilter}
         tracks={tracks}
+        onSelect={selectAuthor}
       />
       <FilterItem
         title={'году выпуска'}
         name={'year'}
         expanded={activeFilter === 'году выпуска'}
-        onClick={() =>
-          setActiveFilter(
-            activeFilter === 'году выпуска' ? null : 'году выпуска',
-          )
-        }
+        onClick={changeActiveFilter}
         tracks={tracks}
+        onSelect={selectAuthor}
       />
       <FilterItem
         title={'жанру'}
         name={'genre'}
         expanded={activeFilter === 'жанру'}
-        onClick={() =>
-          setActiveFilter(activeFilter === 'жанру' ? null : 'жанру')
-        }
+        onClick={changeActiveFilter}
         tracks={tracks}
+        onSelect={selectGenre}
       />
     </div>
   );

@@ -7,11 +7,14 @@ import { TrackType } from '@/sharedTypes/sharedTypes';
 import Skeleton from 'react-loading-skeleton';
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useAppDispatch } from '@/store/store';
+import { setPagePlaylist } from '@/store/features/trackSlice';
 
 type centerBlockProps = {
   title: string;
   loading: boolean;
   playlist: TrackType[];
+  pagePlaylist: TrackType[];
   errorMessage: string | null;
 };
 
@@ -19,17 +22,26 @@ export default function CenterBlock({
   title,
   loading,
   playlist,
+  pagePlaylist,
   errorMessage,
 }: centerBlockProps) {
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    toast.error(errorMessage);
-  }, [errorMessage]);
+    if (errorMessage) toast.error(errorMessage);
+
+    if (!loading && !errorMessage) {
+      dispatch(setPagePlaylist(pagePlaylist));
+    }
+  }, [loading, errorMessage]);
+
+  // todo playlist or not? <Filter tracks={playlist} />;
 
   return (
     <div className={styles.centerblock}>
       <Search />
       <h2 className={styles.centerblock__h2}>{title}</h2>
-      <Filter tracks={playlist} />
+      <Filter tracks={pagePlaylist} />
       <div className={styles.centerblock__content}>
         <div className={styles.content__title}>
           <div className={classNames(styles.playlistTitle__col, styles.col01)}>
