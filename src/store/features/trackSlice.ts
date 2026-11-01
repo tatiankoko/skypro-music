@@ -19,6 +19,7 @@ export type initialStateType = {
     authors: string[];
     genres: string[];
     years: string;
+    search: string;
   };
 };
 
@@ -38,6 +39,7 @@ const initialState: initialStateType = {
     authors: [],
     genres: [],
     years: yearFilter[0],
+    search: '',
   },
 };
 
@@ -146,6 +148,10 @@ const trackSlice = createSlice({
       state.filters.years = action.payload;
       state.filteredTracks = applyFilters(state);
     },
+    setSearchString: (state, action: PayloadAction<string>) => {
+      state.filters.search = action.payload;
+      state.filteredTracks = applyFilters(state);
+    },
   },
 });
 
@@ -167,6 +173,7 @@ export const {
   setFilterAuthors,
   setFilterGenres,
   setFilterYears,
+  setSearchString,
 } = trackSlice.actions;
 
 export const trackSliceReducer = trackSlice.reducer;

@@ -15,12 +15,13 @@ export default function Home() {
     const filtersApplied =
       filters.authors.length ||
       filters.genres.length ||
-      filters.years !== yearFilter[0];
+      filters.years !== yearFilter[0] ||
+      filters.search.length;
 
     const currentPlaylist = filtersApplied ? filteredTracks : allTracks;
 
     setPlaylist(currentPlaylist);
-  }, [filteredTracks, allTracks]);
+  }, [filteredTracks, allTracks, filters]);
 
   return (
     <CenterBlock
