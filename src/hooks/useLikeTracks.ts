@@ -62,7 +62,7 @@ export const useLikeTrack = (track: TrackType | null): returnTypeHook => {
           setIsLoading(false);
         });
     }
-  }, [dispatch, isLike, accessToken, refreshToken]);
+  }, [dispatch, isLike, accessToken, refreshToken, track]);
 
   return {
     isLoading,
