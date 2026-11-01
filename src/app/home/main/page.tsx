@@ -4,6 +4,7 @@ import CenterBlock from '@/components/centerblock/Centerblock';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/store';
 import { TrackType } from '@/sharedTypes/sharedTypes';
+import { yearFilter } from '@/utils/sortTracks';
 
 export default function Home() {
   const { fetchError, fetchIsLoading, allTracks, filteredTracks, filters } =
@@ -11,7 +12,11 @@ export default function Home() {
   const [playlist, setPlaylist] = useState<TrackType[]>([]);
 
   useEffect(() => {
-    const filtersApplied = filters.authors.length || filters.genres.length;
+    const filtersApplied =
+      filters.authors.length ||
+      filters.genres.length ||
+      filters.years !== yearFilter[0];
+
     const currentPlaylist = filtersApplied ? filteredTracks : allTracks;
 
     setPlaylist(currentPlaylist);

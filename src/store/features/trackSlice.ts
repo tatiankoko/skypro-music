@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import { applyFilters } from '@/utils/applyFilters';
+import { yearFilter } from '@/utils/sortTracks';
 
 export type initialStateType = {
   currentTrack: TrackType | null;
@@ -36,7 +37,7 @@ const initialState: initialStateType = {
   filters: {
     authors: [],
     genres: [],
-    years: 'По умолчанию',
+    years: yearFilter[0],
   },
 };
 
@@ -141,6 +142,10 @@ const trackSlice = createSlice({
 
       state.filteredTracks = applyFilters(state);
     },
+    setFilterYears: (state, action: PayloadAction<string>) => {
+      state.filters.years = action.payload;
+      state.filteredTracks = applyFilters(state);
+    },
   },
 });
 
@@ -161,6 +166,7 @@ export const {
   clearLiked,
   setFilterAuthors,
   setFilterGenres,
+  setFilterYears,
 } = trackSlice.actions;
 
 export const trackSliceReducer = trackSlice.reducer;

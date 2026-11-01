@@ -5,7 +5,11 @@ import { useState } from 'react';
 import FilterItem from '@/components/filterItem/FilterItem';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import { useAppDispatch } from '@/store/store';
-import { setFilterAuthors, setFilterGenres } from '@/store/features/trackSlice';
+import {
+  setFilterAuthors,
+  setFilterGenres,
+  setFilterYears,
+} from '@/store/features/trackSlice';
 
 type filterProps = {
   tracks: TrackType[];
@@ -27,6 +31,10 @@ export default function Filter({ tracks }: filterProps) {
     dispatch(setFilterGenres(genre));
   };
 
+  const selectYear = (year: string) => {
+    dispatch(setFilterYears(year));
+  };
+
   return (
     <div className={styles.centerblock__filter}>
       <div className={styles.filter__title}>Искать по:</div>
@@ -44,7 +52,7 @@ export default function Filter({ tracks }: filterProps) {
         expanded={activeFilter === 'году выпуска'}
         onClick={changeActiveFilter}
         tracks={tracks}
-        onSelect={selectAuthor}
+        onSelect={selectYear}
       />
       <FilterItem
         title={'жанру'}
