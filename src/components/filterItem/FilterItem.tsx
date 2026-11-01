@@ -57,6 +57,11 @@ export default function FilterItem({
       >
         {title}
       </button>
+      {selectedItems.length > 0 && name !== 'year' ? (
+        <div className={styles.filter__button_count}>
+          {selectedItems.length}
+        </div>
+      ) : null}
       {expanded ? (
         <div className={styles.filter__wrapper}>
           <ul className={styles.filter__list}>

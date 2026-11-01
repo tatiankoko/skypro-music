@@ -20,7 +20,7 @@
     color: #ffffff;
     cursor: pointer;
     background-color: transparent;
-
+    position: relative;
 }
 
 .filter__button:hover {
@@ -31,6 +31,22 @@
 .filter__button_active {
     border-color: #AD61FF;
     color: #AD61FF;
+}
+
+.filter__button_count {
+    width: 26px;
+    height: 26px;
+    background-color: #AD61FF;
+    color: #FFFFFF;
+    font-size: 13px;
+    line-height: 13px;
+    border-radius: 50%;
+    text-align: center;
+
+    align-content: center;
+    position: absolute;
+    top: -8px;
+    right: -8px;
 }
 
 .filter__wrapper {
@@ -94,3 +110,4 @@
     font-weight: 400;
     text-decoration-line: underline;
 }
+
