@@ -1,6 +1,12 @@
-import { formatTime, getTimePanel, getUniqueValuesByKey } from '@/utils/helper';
+import {
+  formatTime,
+  getTimePanel,
+  getUniqueValuesByKey,
+  isFiltersApplied,
+} from '@/utils/helper';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import { data } from '@/data';
+import { yearFilter } from '@/utils/sortTracks';
 
 describe('formatTime', () => {
   it('Добавление нуля если секунд < 10', () => {
@@ -33,5 +39,28 @@ describe('getUniqueValuesByKey', () => {
   });
   it('Корректный список уникальных жанров', () => {
     expect(getUniqueValuesByKey(mockTracks, 'genre').length).toBe(1);
+  });
+});
+
+describe('isFiltersApplied', () => {
+  it('Корректная проверка применения фильтров', () => {
+    expect(
+      isFiltersApplied({
+        authors: ['one', 'two', 'three'],
+        genres: [],
+        years: yearFilter[0],
+        search: '',
+      }),
+    ).toBe(true);
+  });
+  it('Корректная проверка отсутствия применения фильтров', () => {
+    expect(
+      isFiltersApplied({
+        authors: [],
+        genres: [],
+        years: yearFilter[0],
+        search: '',
+      }),
+    ).toBe(false);
   });
 });
