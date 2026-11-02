@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { clearFilters } from '@/store/features/trackSlice';
 import { TrackType } from '@/sharedTypes/sharedTypes';
-import { isFiltersApplied } from '@/utils/helper';
+import { emptyPlaylistWarning, isFiltersApplied } from '@/utils/helper';
 
 export default function FavoritesPage() {
   const user = useAppSelector((state) => state.user.user);
@@ -35,8 +35,9 @@ export default function FavoritesPage() {
 
   useEffect(() => {
     const filtersApplied = isFiltersApplied(filters);
-
     const currentPlaylist = filtersApplied ? filteredTracks : favoriteTracks;
+
+    if (filtersApplied) emptyPlaylistWarning(currentPlaylist);
 
     setPlaylist(currentPlaylist);
   }, [filteredTracks, favoriteTracks, filters]);
