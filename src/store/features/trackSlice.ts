@@ -1,27 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TrackType } from '@/sharedTypes/sharedTypes';
+import { initialStateType, TrackType } from '@/sharedTypes/sharedTypes';
 import { applyFilters } from '@/utils/applyFilters';
 import { yearFilter } from '@/utils/sortTracks';
-
-export type initialStateType = {
-  currentTrack: TrackType | null;
-  isPlaying: boolean;
-  isShuffle: boolean;
-  playlist: TrackType[];
-  shuffledPlaylist: TrackType[];
-  allTracks: TrackType[];
-  favoriteTracks: TrackType[];
-  pagePlaylist: TrackType[];
-  filteredTracks: TrackType[];
-  fetchError: null | string;
-  fetchIsLoading: boolean;
-  filters: {
-    authors: string[];
-    genres: string[];
-    years: string;
-    search: string;
-  };
-};
 
 const initialState: initialStateType = {
   currentTrack: null,
@@ -127,8 +107,6 @@ const trackSlice = createSlice({
         state.filters.authors = [...state.filters.authors, author];
       }
 
-      // todo добавить комбинирование
-
       state.filteredTracks = applyFilters(state);
     },
     setFilterGenres: (state, action: PayloadAction<string>) => {
@@ -152,6 +130,10 @@ const trackSlice = createSlice({
       state.filters.search = action.payload;
       state.filteredTracks = applyFilters(state);
     },
+    clearFilters: (state) => {
+      state.filters = initialState.filters;
+      state.filteredTracks = initialState.filteredTracks;
+    },
   },
 });
 
@@ -174,6 +156,7 @@ export const {
   setFilterGenres,
   setFilterYears,
   setSearchString,
+  clearFilters,
 } = trackSlice.actions;
 
 export const trackSliceReducer = trackSlice.reducer;

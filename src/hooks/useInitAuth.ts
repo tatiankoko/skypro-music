@@ -5,8 +5,8 @@ import {
   setRefreshToken,
   setUser,
   setIsAuth,
-  userType,
 } from '@/store/features/authSlice';
+import { userType } from '@/sharedTypes/sharedTypes';
 
 export const useInitAuth = () => {
   const dispatch = useAppDispatch();

@@ -1,10 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export type userType = {
-  email: string;
-  username: string;
-  _id: number;
-};
+import { userType } from '@/sharedTypes/sharedTypes';
 
 type authStateType = {
   user: userType | null;

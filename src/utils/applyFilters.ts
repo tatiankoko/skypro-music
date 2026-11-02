@@ -1,5 +1,4 @@
-import { initialStateType } from '@/store/features/trackSlice';
-import { TrackType } from '@/sharedTypes/sharedTypes';
+import { initialStateType, TrackType } from '@/sharedTypes/sharedTypes';
 import { sortByYearFilter } from '@/utils/sortTracks';
 
 export const applyFilters = (state: initialStateType): TrackType[] => {
