@@ -4,11 +4,11 @@ import Search from '@/components/search/Search';
 import Track from '@/components/track/Track';
 import Filter from '@/components/filter/Filter';
 import { TrackType } from '@/sharedTypes/sharedTypes';
-import Skeleton from 'react-loading-skeleton';
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useAppDispatch } from '@/store/store';
 import { setPagePlaylist } from '@/store/features/trackSlice';
+import TrackSkeleton from '@/components/trackSkeleton/TrackSkeleton';
 
 type centerBlockProps = {
   title: string;
@@ -61,40 +61,12 @@ export default function CenterBlock({
           <div className={styles.skeleton}>
             <div className={styles.skeleton__content}>
               <div className={styles.skeleton__block}>
-                <Skeleton
-                  baseColor={'#313131'}
-                  width={51}
-                  height={51}
-                  borderRadius={0}
-                />
-                <Skeleton
-                  baseColor={'#313131'}
-                  width={126}
-                  height={19}
-                  borderRadius={0}
-                />
+                <TrackSkeleton width={51} height={51} />
+                <TrackSkeleton width={126} height={19} />
               </div>
-              <Skeleton
-                baseColor={'#313131'}
-                width={321}
-                height={19}
-                borderRadius={0}
-                className={styles.skeleton__item}
-              />
-              <Skeleton
-                baseColor={'#313131'}
-                width={245}
-                height={19}
-                borderRadius={0}
-                className={styles.skeleton__item}
-              />
-              <Skeleton
-                baseColor={'#313131'}
-                width={60}
-                height={19}
-                borderRadius={0}
-                className={styles.skeleton__item}
-              />
+              <TrackSkeleton width={321} height={19} />
+              <TrackSkeleton width={245} height={19} />
+              <TrackSkeleton width={60} height={19} />
             </div>
           </div>
         ) : playlist.length > 0 ? (
