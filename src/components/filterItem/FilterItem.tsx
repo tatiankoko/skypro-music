@@ -3,6 +3,7 @@ import { getUniqueValuesByKey } from '@/utils/helper';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import classNames from 'classnames';
 import { useCallback, useMemo, useState } from 'react';
+import { yearFilter } from '@/utils/sortTracks';
 
 type filterItemProp = {
   title: string;
@@ -10,6 +11,7 @@ type filterItemProp = {
   expanded: boolean;
   onClick: (name: string) => void;
   tracks: TrackType[];
+  onSelect: (value: string) => void;
 };
 
 export default function FilterItem({
@@ -18,28 +20,30 @@ export default function FilterItem({
   expanded,
   onClick,
   tracks,
+  onSelect,
 }: filterItemProp) {
-  const yearFilter: string[] = [
-    'По умолчанию',
-    'Сначала новые',
-    'Сначала старые',
-  ];
-
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
+  const isSortFilter = name === 'year';
+
   const uniqueValuesByKey = useMemo(
-    () => (name === 'year' ? yearFilter : getUniqueValuesByKey(tracks, name)),
+    () => (isSortFilter ? yearFilter : getUniqueValuesByKey(tracks, name)),
     [name, tracks],
   );
 
-  const handleFilterItemClick = useCallback((item: string) => {
-    setSelectedItems((prev) => {
-      if (prev.includes(item)) {
-        return prev.filter((i) => i !== item);
-      }
-      return [...prev, item];
-    });
-  }, []);
+  const handleFilterItemClick = useCallback(
+    (item: string) => {
+      onSelect(item);
+
+      setSelectedItems((prev) => {
+        if (prev.includes(item)) {
+          return isSortFilter ? [item] : prev.filter((i) => i !== item);
+        }
+        return isSortFilter ? [item] : [...prev, item];
+      });
+    },
+    [onSelect, isSortFilter],
+  );
 
   return (
     <div className={styles.filter__button__wrapper}>
@@ -53,6 +57,11 @@ export default function FilterItem({
       >
         {title}
       </button>
+      {selectedItems.length > 0 && !selectedItems.includes(yearFilter[0]) ? (
+        <div className={styles.filter__button_count}>
+          {selectedItems.length}
+        </div>
+      ) : null}
       {expanded ? (
         <div className={styles.filter__wrapper}>
           <ul className={styles.filter__list}>

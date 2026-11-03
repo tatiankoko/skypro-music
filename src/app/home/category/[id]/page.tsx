@@ -7,18 +7,24 @@ import { AxiosError } from 'axios';
 import CenterBlock from '@/components/centerblock/Centerblock';
 import { defaultTitles } from '@/app/home/constants';
 import { useAppDispatch, useAppSelector } from '@/store/store';
+import { clearFilters } from '@/store/features/trackSlice';
+import { emptyPlaylistWarning, isFiltersApplied } from '@/utils/helper';
 
 export default function CategoryPage() {
-  useAppDispatch();
-  const { allTracks, fetchIsLoading, fetchError } = useAppSelector(
-    (state) => state.tracks,
-  );
+  const dispatch = useAppDispatch();
+  const { allTracks, fetchIsLoading, fetchError, filters, filteredTracks } =
+    useAppSelector((state) => state.tracks);
 
   const params = useParams<{ id: string }>();
-  const [tracks, setTracks] = useState<TrackType[]>([]);
+  const [categoryTracks, setCategoryTracks] = useState<TrackType[]>([]);
+  const [playlist, setPlaylist] = useState<TrackType[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState<string>(defaultTitles[+params.id]);
+
+  useEffect(() => {
+    dispatch(clearFilters());
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -32,7 +38,16 @@ export default function CategoryPage() {
             result.items.includes(track._id),
           );
 
-          setTracks(categoryTracks);
+          const filtersApplied = isFiltersApplied(filters);
+          const currentPlaylist = filtersApplied
+            ? filteredTracks
+            : categoryTracks;
+
+          setPlaylist(currentPlaylist);
+
+          if (filtersApplied) emptyPlaylistWarning(currentPlaylist);
+
+          setCategoryTracks(categoryTracks);
         })
         .catch((error) => {
           if (error instanceof AxiosError) {
@@ -47,13 +62,14 @@ export default function CategoryPage() {
         })
         .finally(() => setLoading(false));
     }
-  }, [fetchIsLoading]);
+  }, [fetchIsLoading, filteredTracks, allTracks, filters]);
 
   return (
     <CenterBlock
       title={title}
       loading={loading}
-      playlist={tracks}
+      playlist={playlist}
+      pagePlaylist={categoryTracks}
       errorMessage={error || fetchError}
     />
   );

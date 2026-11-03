@@ -1,17 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TrackType } from '@/sharedTypes/sharedTypes';
-
-type initialStateType = {
-  currentTrack: TrackType | null;
-  isPlaying: boolean;
-  isShuffle: boolean;
-  playlist: TrackType[];
-  shuffledPlaylist: TrackType[];
-  allTracks: TrackType[];
-  favoriteTracks: TrackType[];
-  fetchError: null | string;
-  fetchIsLoading: boolean;
-};
+import { initialStateType, TrackType } from '@/sharedTypes/sharedTypes';
+import { applyFilters } from '@/utils/applyFilters';
+import { yearFilter } from '@/utils/sortTracks';
 
 const initialState: initialStateType = {
   currentTrack: null,
@@ -21,8 +11,16 @@ const initialState: initialStateType = {
   shuffledPlaylist: [],
   allTracks: [],
   favoriteTracks: [],
+  pagePlaylist: [],
+  filteredTracks: [],
   fetchError: null,
   fetchIsLoading: true,
+  filters: {
+    authors: [],
+    genres: [],
+    years: yearFilter[0],
+    search: '',
+  },
 };
 
 const trackSlice = createSlice({
@@ -95,6 +93,47 @@ const trackSlice = createSlice({
     clearLiked: (state) => {
       state.favoriteTracks = [];
     },
+    setPagePlaylist: (state, action: PayloadAction<TrackType[]>) => {
+      state.pagePlaylist = action.payload;
+    },
+    setFilterAuthors: (state, action: PayloadAction<string>) => {
+      const author = action.payload;
+
+      if (state.filters.authors.includes(author)) {
+        state.filters.authors = state.filters.authors.filter(
+          (elem) => elem !== author,
+        );
+      } else {
+        state.filters.authors = [...state.filters.authors, author];
+      }
+
+      state.filteredTracks = applyFilters(state);
+    },
+    setFilterGenres: (state, action: PayloadAction<string>) => {
+      const genre = action.payload;
+
+      if (state.filters.genres.includes(genre)) {
+        state.filters.genres = state.filters.genres.filter(
+          (elem) => elem !== genre,
+        );
+      } else {
+        state.filters.genres = [...state.filters.genres, genre];
+      }
+
+      state.filteredTracks = applyFilters(state);
+    },
+    setFilterYears: (state, action: PayloadAction<string>) => {
+      state.filters.years = action.payload;
+      state.filteredTracks = applyFilters(state);
+    },
+    setSearchString: (state, action: PayloadAction<string>) => {
+      state.filters.search = action.payload;
+      state.filteredTracks = applyFilters(state);
+    },
+    clearFilters: (state) => {
+      state.filters = initialState.filters;
+      state.filteredTracks = initialState.filteredTracks;
+    },
   },
 });
 
@@ -107,11 +146,17 @@ export const {
   setPrevTrack,
   setAllTracks,
   setFavoriteTracks,
+  setPagePlaylist,
   addLikedTracks,
   removeLikedTracks,
   setFetchError,
   setFetchIsLoading,
   clearLiked,
+  setFilterAuthors,
+  setFilterGenres,
+  setFilterYears,
+  setSearchString,
+  clearFilters,
 } = trackSlice.actions;
 
 export const trackSliceReducer = trackSlice.reducer;

@@ -2,12 +2,16 @@
 
 import styles from './search.module.css';
 import { ChangeEvent, useState } from 'react';
+import { useAppDispatch } from '@/store/store';
+import { setSearchString } from '@/store/features/trackSlice';
 
 export default function Search() {
+  const dispatch = useAppDispatch();
   const [searchInput, setSearchInput] = useState('');
 
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
+    dispatch(setSearchString(event.target.value));
   };
 
   return (
