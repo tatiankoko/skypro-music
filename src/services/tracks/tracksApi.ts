@@ -22,7 +22,7 @@ export const getTracksById = async (
   return response.data.data;
 };
 
-export const addLike = (access: string, id: number) => {
+export const addLike = async (access: string, id: number) => {
   return axios.post(
     BASE_URL + `/catalog/track/${id}/favorite/`,
     {},
@@ -32,12 +32,9 @@ export const addLike = (access: string, id: number) => {
       },
     },
   );
-  /*.then((response) => {
-      return response.data.data;
-    })*/
 };
 
-export const removeLike = (access: string, id: number) => {
+export const removeLike = async (access: string, id: number) => {
   return axios.delete(BASE_URL + `/catalog/track/${id}/favorite/`, {
     headers: {
       Authorization: `Bearer ${access}`,

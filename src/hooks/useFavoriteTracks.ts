@@ -12,8 +12,6 @@ export const useFavoriteTracks = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const favorites = useAppSelector((state) => state.tracks.favoriteTracks);
 
-  /*  useEffect(() => {}, [favoriteTracks]);*/
-
   useEffect(() => {
     if (!accessToken || !refreshToken) {
       return setErrorMsg('Нет авторизации');

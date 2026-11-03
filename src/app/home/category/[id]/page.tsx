@@ -52,7 +52,7 @@ export default function CategoryPage() {
             if (error.response) {
               setError(error.response.data);
             } else if (error.request) {
-              setError('Произошла ошибка. Попробуйте позже'); // что-то с интернетом
+              setError('Произошла ошибка. Попробуйте позже');
             } else {
               setError('Неизвестная ошибка');
             }

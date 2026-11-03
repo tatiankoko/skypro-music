@@ -35,8 +35,6 @@ export default function CenterBlock({
     }
   }, [loading, errorMessage]);
 
-  // todo playlist or not? <Filter tracks={playlist} />;
-
   return (
     <div className={styles.centerblock}>
       <Search />
