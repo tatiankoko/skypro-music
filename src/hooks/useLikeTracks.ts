@@ -21,7 +21,6 @@ export const useLikeTrack = (track: TrackType | null): returnTypeHook => {
   const isLike = useMemo(
     () => favoriteTracks.some((t) => t._id === track?._id),
     [favoriteTracks, track],
-    /*track?._id,*/
   );
 
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +34,7 @@ export const useLikeTrack = (track: TrackType | null): returnTypeHook => {
     const actionApi = isLike ? removeLike : addLike;
     const actionSlice = isLike ? removeLikedTracks : addLikedTracks;
 
-    setIsLoading(true); // TODO enable set like while loading
+    setIsLoading(true);
     setErrorMsg(null);
 
     if (track) {

@@ -62,7 +62,7 @@ export default function FilterItem({
           {selectedItems.length}
         </div>
       ) : null}
-      {expanded ? (
+      {expanded && uniqueValuesByKey.length > 0 ? (
         <div className={styles.filter__wrapper}>
           <ul className={styles.filter__list}>
             {uniqueValuesByKey.map((item) => {

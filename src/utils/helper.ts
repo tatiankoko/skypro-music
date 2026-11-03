@@ -1,6 +1,5 @@
 import { filter, TrackType } from '@/sharedTypes/sharedTypes';
 import { yearFilter } from '@/utils/sortTracks';
-import { toast } from 'react-toastify';
 
 export function formatTime(time: number) {
   const minutes = Math.floor(time / 60);
@@ -49,10 +48,4 @@ export const isFiltersApplied = (filters: filter): boolean => {
     filters.years !== yearFilter[0] ||
     filters.search.length > 0
   );
-};
-
-export const emptyPlaylistWarning = (playlist: TrackType[]) => {
-  if (playlist.length <= 0) {
-    toast.warning('Нет подходящих треков');
-  }
 };

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import { clearFilters } from '@/store/features/trackSlice';
-import { emptyPlaylistWarning, isFiltersApplied } from '@/utils/helper';
+import { isFiltersApplied } from '@/utils/helper';
 
 export default function Home() {
   const { fetchError, fetchIsLoading, allTracks, filteredTracks, filters } =
@@ -21,8 +21,6 @@ export default function Home() {
     const filtersApplied = isFiltersApplied(filters);
 
     const currentPlaylist = filtersApplied ? filteredTracks : allTracks;
-
-    if (filtersApplied) emptyPlaylistWarning(currentPlaylist);
 
     setPlaylist(currentPlaylist);
   }, [filteredTracks, allTracks, filters]);

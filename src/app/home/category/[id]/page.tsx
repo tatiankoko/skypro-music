@@ -8,7 +8,7 @@ import CenterBlock from '@/components/centerblock/Centerblock';
 import { defaultTitles } from '@/app/home/constants';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { clearFilters } from '@/store/features/trackSlice';
-import { emptyPlaylistWarning, isFiltersApplied } from '@/utils/helper';
+import { isFiltersApplied } from '@/utils/helper';
 
 export default function CategoryPage() {
   const dispatch = useAppDispatch();
@@ -45,8 +45,6 @@ export default function CategoryPage() {
 
           setPlaylist(currentPlaylist);
 
-          if (filtersApplied) emptyPlaylistWarning(currentPlaylist);
-
           setCategoryTracks(categoryTracks);
         })
         .catch((error) => {
@@ -54,7 +52,7 @@ export default function CategoryPage() {
             if (error.response) {
               setError(error.response.data);
             } else if (error.request) {
-              setError('Произошла ошибка. Попробуйте позже'); // что-то с интернетом
+              setError('Произошла ошибка. Попробуйте позже');
             } else {
               setError('Неизвестная ошибка');
             }
