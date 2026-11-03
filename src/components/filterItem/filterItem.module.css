@@ -51,6 +51,7 @@
 
 .filter__wrapper {
     position: absolute;
+    z-index: 3;
     left: 0;
     top: 50px;
     padding: 34px;

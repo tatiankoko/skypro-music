@@ -99,7 +99,7 @@ export default function CenterBlock({
               />
             </div>
           </div>
-        ) : (
+        ) : playlist.length > 0 ? (
           <div className={styles.content__playlist}>
             {playlist.map((trackItem) => (
               <Track
@@ -108,6 +108,12 @@ export default function CenterBlock({
                 playlist={playlist}
               />
             ))}
+          </div>
+        ) : (
+          <div className={styles.notification__wrapper}>
+            <div className={styles.notification__container}>
+              Нет подходящих треков
+            </div>
           </div>
         )}
       </div>

@@ -8,7 +8,7 @@ import CenterBlock from '@/components/centerblock/Centerblock';
 import { defaultTitles } from '@/app/home/constants';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { clearFilters } from '@/store/features/trackSlice';
-import { emptyPlaylistWarning, isFiltersApplied } from '@/utils/helper';
+import { isFiltersApplied } from '@/utils/helper';
 
 export default function CategoryPage() {
   const dispatch = useAppDispatch();
@@ -44,8 +44,6 @@ export default function CategoryPage() {
             : categoryTracks;
 
           setPlaylist(currentPlaylist);
-
-          if (filtersApplied) emptyPlaylistWarning(currentPlaylist);
 
           setCategoryTracks(categoryTracks);
         })

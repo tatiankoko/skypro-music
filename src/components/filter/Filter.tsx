@@ -4,7 +4,7 @@ import styles from './filter.module.css';
 import { useState } from 'react';
 import FilterItem from '@/components/filterItem/FilterItem';
 import { TrackType } from '@/sharedTypes/sharedTypes';
-import { useAppDispatch } from '@/store/store';
+import { useAppDispatch, useAppSelector } from '@/store/store';
 import {
   setFilterAuthors,
   setFilterGenres,
@@ -18,9 +18,12 @@ type filterProps = {
 export default function Filter({ tracks }: filterProps) {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const fetchIsLoading = useAppSelector((state) => state.tracks.fetchIsLoading);
 
   const changeActiveFilter = (name: string) => {
-    setActiveFilter(activeFilter === name ? null : name);
+    if (!fetchIsLoading) {
+      setActiveFilter(activeFilter === name ? null : name);
+    }
   };
 
   const selectAuthor = (author: string) => {
